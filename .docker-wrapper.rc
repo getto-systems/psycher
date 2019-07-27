@@ -1,0 +1,2 @@
+DOCKER_WRAPPER_IMAGE_node(){ echo "10.16.0-stretch"; }
+DOCKER_WRAPPER_IMAGE_awscli(){ echo "getto/awscli:0.2.0"; }

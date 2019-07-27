@@ -1,0 +1,13 @@
+{
+  "version": "0.0.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "shun@getto.systems",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.501.0",
+    "jest": "^24.8.0"
+  },
+  "dependencies": {}
+}
