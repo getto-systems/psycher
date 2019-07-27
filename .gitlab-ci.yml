@@ -11,9 +11,9 @@ test:
 
 release:
   only:
-    - refs:
+    refs:
       - triggers
-    - variables:
+    variables:
       - $RELEASE
 
   image: python:3.7.4
