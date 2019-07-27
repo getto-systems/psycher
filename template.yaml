@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: getto-psycher-slack-lambda
+Parameters:
+  Role:
+    Type: String
+    Description: "lambda role arn"
+  KMS:
+    Type: String
+    Description: "KMS key arn"
+  SecretRegion:
+    Type: String
+    Description: "region of secret"
+  SecretId:
+    Type: String
+    Description: "id of secret"
+Resources:
+  lambdaResource:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getto-psycher-slack
+      Runtime: nodejs10.x
+      Handler: index.handler
+      MemorySize: 128
+      Timeout: 3
+      CodeUri: ./src/index.js
+      AutoPublishAlias: active
+      KmsKeyArn:
+        Ref: KMS
+      Role:
+        Ref: Role
+      Environment:
+        Variables:
+          SECRET_REGION:
+            Ref: SecretRegion
+          SECRET_ID:
+            Ref: SecretId
