@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.0.5
+
+fix: CodeUri See merge request getto-psycher/slack!5
+
+
 ## Version : 0.0.4
 
 
