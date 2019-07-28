@@ -23,7 +23,7 @@ Resources:
       Handler: index.handler
       MemorySize: 128
       Timeout: 3
-      CodeUri: ./src/index.js
+      CodeUri: ./src
       AutoPublishAlias: active
       KmsKeyArn:
         Ref: KMS
