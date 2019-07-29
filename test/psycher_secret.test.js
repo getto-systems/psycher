@@ -1,5 +1,5 @@
-const slack_bot_event = require("../src/slack_bot_event");
-const psycher_secret = require("../src/psycher_secret");
+const slack_bot_event = require("../lib/slack_bot_event");
+const psycher_secret = require("../lib/psycher_secret");
 
 test("properties", () => {
   const secret = psycher_secret.init({

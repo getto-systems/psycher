@@ -1,9 +1,9 @@
-const slack_bot_event = require("./slack_bot_event");
-const psycher_secret = require("./psycher_secret");
-const outgoing_messenger = require("./outgoing_messenger");
-const handler = require("./handler");
+const slack_bot_event = require("./lib/slack_bot_event");
+const psycher_secret = require("./lib/psycher_secret");
+const outgoing_messenger = require("./lib/outgoing_messenger");
+const handler = require("./lib/handler");
 
-const aws_secret_provider = require("./providers/aws_secret");
+const aws_secret_provider = require("./lib/providers/aws_secret");
 
 exports.handler = async (aws_lambda_event) => {
   // logging event object for debug real-world slack event
