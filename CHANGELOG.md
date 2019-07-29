@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.1.5
+
+fix: slack messenger See merge request getto-psycher/slack!17
+
+
 ## Version : 0.1.4
 
 
