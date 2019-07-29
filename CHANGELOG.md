@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.0.7
+
+fix: CodeUri See merge request getto-psycher/slack!11
+
+
 ## Version : 0.0.6
 
 fix: handler See merge request getto-psycher/slack!10
