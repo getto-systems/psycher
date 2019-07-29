@@ -32,7 +32,7 @@ release_show_commits(){
 
   release_range
 
-  git log $range --merges --format="%b$boundary" | xargs /bin/echo | sed "s/$boundary \?/\n/g"
+  git log "$range" --merges --format="%b$boundary" | xargs /bin/echo | sed "s/$boundary \?/\n/g"
 }
 
 release_version(){
@@ -79,7 +79,7 @@ release_next_version(){
 
   release_range
 
-  if [ -n "$(git log $range --format="%s" | grep "!" | head -1)" ]; then
+  if [ -n "$(git log "$range" --format="%s" | grep "!" | head -1)" ]; then
     next=major
   else
     release_only_ignored
@@ -105,14 +105,14 @@ release_only_ignored(){
 
     mkdir $tmp
     cp $ignore $tmp/.gitignore
-    cd $tmp
-    git init
 
-    for file in $(git diff $range --name-only); do
-      mkdir -p $(basename $file)
-      touch $file
+    for file in $(git diff "$range" --name-only); do
+      mkdir -p $tmp/$(dirname $file)
+      touch $tmp/$file
     done
 
+    cd $tmp
+    git init
     if [ -z "$(git status --porcelain)" ]; then
       only_ignored=true
     fi
