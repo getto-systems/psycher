@@ -2,8 +2,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "npm run watch",
-    "watch": "npm run watch:src & npm run watch:test",
-    "watch:src": "exec-on-changed -d ./src -f ./bin/test_corresponding.sh",
+    "watch": "npm run watch:lib & npm run watch:test",
+    "watch:lib": "exec-on-changed -d ./lib -f ./bin/test_corresponding.sh",
     "watch:test": "exec-on-changed -d ./test -f ./bin/test.sh",
     "test": "jest"
   },
