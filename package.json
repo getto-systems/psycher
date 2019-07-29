@@ -1,12 +1,17 @@
 {
   "version": "0.0.0",
   "scripts": {
+    "start": "npm run watch",
+    "watch": "npm run watch:src & npm run watch:test",
+    "watch:src": "exec-on-changed -d ./src -f ./bin/test_corresponding.sh",
+    "watch:test": "exec-on-changed -d ./test -f ./bin/test.sh",
     "test": "jest"
   },
   "author": "shun@getto.systems",
   "license": "MIT",
   "devDependencies": {
     "aws-sdk": "^2.501.0",
+    "exec-on-changed": "^1.2.0",
     "jest": "^24.8.0"
   },
   "dependencies": {}
