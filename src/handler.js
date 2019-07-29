@@ -4,17 +4,23 @@ const handlers = [
   require("./handlers/unknown_mention.js"),
 ];
 
-exports.init = (bot_event, messenger) => handle_event(bot_event, messenger);
+exports.init = (bot_event, messenger) => init(bot_event, messenger);
 
 /**
  * bot_event : slack_bot_event
  * messenger : outgoing_messenger
  */
-const handle_event = (bot_event, messenger) => {
-  return handlers.reduce(null, (promise, handler) => {
-    if (promise) {
-      return promise;
-    }
-    return handler.handle_event(bot_event, messenger);
-  });
+const init = (bot_event, messenger) => {
+  const handle_event = () => {
+    return handlers.reduce((promise, handler) => {
+      if (promise) {
+        return promise;
+      }
+      return handler.handle_event(bot_event, messenger);
+    }, null);
+  };
+
+  return {
+    handle_event: handle_event,
+  };
 };

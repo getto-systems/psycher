@@ -12,9 +12,11 @@ test("greeting", async () => {
     text: "<@USERID> よろしく",
   });
 
-  await greeting.handle_event(bot_event, messenger);
+  const promise = greeting.handle_event(bot_event, messenger);
+  await promise;
 
   expect(messenger.data.slack).toBe(1);
+  expect(!!promise).toBe(true);
 });
 
 test("unknown", async () => {
@@ -26,7 +28,9 @@ test("unknown", async () => {
     text: "<@USERID> hello",
   });
 
-  await greeting.handle_event(bot_event, messenger);
+  const promise = greeting.handle_event(bot_event, messenger);
+  await promise;
 
   expect(messenger.data.slack).toBe(0);
+  expect(!!promise).toBe(false);
 });
