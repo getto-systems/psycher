@@ -25,6 +25,12 @@ pip install awscli
 ./bin/deploy.sh
 ```
 
+### Test
+
+```bash
+npm test
+```
+
 
 ## License
 
