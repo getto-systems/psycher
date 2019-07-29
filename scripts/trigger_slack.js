@@ -1,6 +1,6 @@
-const slack_bot_event = require("../src/slack_bot_event");
-const psycher_secret = require("../src/psycher_secret");
-const slack = require("../src/outgoing_messengers/slack");
+const slack_bot_event = require("../lib/slack_bot_event");
+const psycher_secret = require("../lib/psycher_secret");
+const slack = require("../lib/outgoing_messengers/slack");
 
 const bot_event = slack_bot_event.init({
   type: "app_mention",
