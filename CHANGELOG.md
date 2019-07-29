@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 0.0.8
+
+
+
 ## Version : 0.0.7
 
 fix: CodeUri See merge request getto-psycher/slack!11
