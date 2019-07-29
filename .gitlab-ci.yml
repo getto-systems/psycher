@@ -3,6 +3,10 @@ stages:
   - build
   - release
 
+cache:
+  paths:
+    - node_modules
+
 test:
   stage: test
   only:
