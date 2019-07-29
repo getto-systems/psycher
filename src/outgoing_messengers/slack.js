@@ -1,6 +1,6 @@
 const https = require("https");
 
-exports.init = (secret) => init(secret);
+exports.init = (bot_event, secret) => init(bot_event, secret);
 
 /**
  * bot_event : slack_bot_event

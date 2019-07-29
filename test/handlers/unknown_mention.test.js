@@ -1,7 +1,7 @@
-const outgoing_messenger = require("../outgoing_messenger.js");
+const outgoing_messenger = require("../outgoing_messenger");
 
-const slack_bot_event = require("../../src/slack_bot_event.js");
-const greeting = require("../../src/handlers/unknown_mention.js");
+const slack_bot_event = require("../../src/slack_bot_event");
+const greeting = require("../../src/handlers/unknown_mention");
 
 test("unknown mention", async () => {
   const messenger = outgoing_messenger.init();
