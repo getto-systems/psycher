@@ -10,6 +10,7 @@ exports.handler = async (aws_lambda_event) => {
 
   const body = parse_json(aws_lambda_event.body);
   if (!body) {
+    // bad request when request body parse failed
     return {
       statusCode: 400,
       body: JSON.stringify({
@@ -18,6 +19,7 @@ exports.handler = async (aws_lambda_event) => {
     };
   }
 
+  // there is no event when challenge request
   const raw_event = body.event;
   if (raw_event) {
     const bot_event = slack_bot_event.init({
@@ -36,6 +38,7 @@ exports.handler = async (aws_lambda_event) => {
     await handler.handle_event(bot_event, messenger);
   }
 
+  // response to challenge request
   return {
     statusCode: 200,
     body: JSON.stringify({
