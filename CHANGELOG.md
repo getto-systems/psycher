@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 0.1.0
+
+fix: version_dump See merge request getto-psycher/slack!13
+fix: gitlab messenger See merge request getto-psycher/slack!12
+
+
 ## Version : 0.0.8
 
 
