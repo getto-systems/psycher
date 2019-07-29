@@ -1,4 +1,4 @@
-const slack_bot_event = require("../src/slack_bot_event.js");
+const slack_bot_event = require("../src/slack_bot_event");
 
 test("app_mention", () => {
   const bot_event = slack_bot_event.init({

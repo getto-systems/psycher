@@ -3,7 +3,7 @@ const psycher_secret = require("./psycher_secret");
 const outgoing_messenger = require("./outgoing_messenger");
 const handler = require("./handler");
 
-const aws_secret = require("./aws/secret");
+const aws_secret_provider = require("./providers/aws_secret");
 
 exports.handler = async (aws_lambda_event) => {
   // logging event object for debug real-world slack event
@@ -23,7 +23,7 @@ exports.handler = async (aws_lambda_event) => {
   // there is no event on challenge-request
   const raw_event = body.event;
   if (raw_event) {
-    const aws_secret = await aws_secret.get({
+    const aws_secret = await aws_secret_provider.get({
       region: process.env.REGION,
       secret_id: process.env.SECRET_ID,
     });

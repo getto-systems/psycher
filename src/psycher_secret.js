@@ -30,14 +30,19 @@ const gitlab = (struct) => {
     const channel = bot_event.channel;
 
     if (struct.targets[channel] && struct.tokens[channel]) {
-      const targets = struct.targets[channel].split(",");
-      const target = targets.filter((word) => bot_event.app_mention_includes(word))[0];
+      const target = find_target(struct.targets[channel].split(","));
       if (target) {
         return struct.tokens[channel][target];
       }
     }
 
     return null;
+  };
+  const find_target = (targets) => {
+    if (targets.length == 1) {
+      return targets[0];
+    }
+    return targets.filter((word) => bot_event.app_mention_includes(word))[0];
   };
 
   return {

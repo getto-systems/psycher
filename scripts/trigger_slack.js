@@ -1,0 +1,23 @@
+const slack_bot_event = require("../src/slack_bot_event");
+const psycher_secret = require("../src/psycher_secret");
+const slack = require("../src/outgoing_messengers/slack");
+
+const bot_event = slack_bot_event.init({
+  type: "app_mention",
+  channel: "CHANNEL",
+  timestamp: "TIMESTAMP",
+  text: "<@USERID> よろ",
+});
+
+const secret = psycher_secret.init({
+  slack: {
+    bot_token: process.env.SLACK_BOT_TOKEN,
+  },
+  gitlab: {
+    user_id: process.env.GITLAB_USER_ID,
+    release_targets: {},
+    trigger_tokens: {},
+  },
+});
+
+slack.init(bot_event, secret).reply("よろしくお願いいたします");

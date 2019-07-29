@@ -1,6 +1,7 @@
 const https = require("https");
+const FormData = require("form-data");
 
-exports.init = (secret) => init(secret);
+exports.init = (bot_event, secret) => init(bot_event, secret);
 
 /**
  * bot_event : slack_bot_event
@@ -21,14 +22,13 @@ const init = (bot_event, secret) => {
 
 const https_request = (bot_event, token, secret) => {
   return new Promise((resolve, reject) => {
+    const form = new FormData();
     const options = {
       hostname: "gitlab.com",
       port: 443,
       path: "/api/v4/projects/" + secret.gitlab.user_id + "/trigger/pipeline",
       method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
+      headers: form.getHeaders(),
     };
     const request = https.request(options, (response) => {
       console.log({responseCode: response.statusCode});
@@ -44,10 +44,13 @@ const https_request = (bot_event, token, secret) => {
     request.on("error", (e) => {
       reject(e);
     });
-    request.write("token=" + token + "\n");
-    request.write("ref=master" + "\n");
-    request.write("variables[RELEASE]=true" + "\n");
-    request.write("variables[timestamp]=" + bot_event.timestamp + "\n");
+
+    form.append("token", token);
+    form.append("ref", "master");
+    form.append("variables[RELEASE]", "true");
+    form.append("variables[timestamp]", bot_event.timestamp);
+    form.pipe(request);
+
     request.end();
   });
 };

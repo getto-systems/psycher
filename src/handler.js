@@ -1,7 +1,7 @@
 const handlers = [
-  require("./handlers/release.js"),
-  require("./handlers/greeting.js"),
-  require("./handlers/unknown_mention.js"),
+  require("./handlers/release"),
+  require("./handlers/greeting"),
+  require("./handlers/unknown_mention"),
 ];
 
 exports.init = (bot_event, messenger) => init(bot_event, messenger);
