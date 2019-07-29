@@ -16,6 +16,7 @@ test("greeting", async () => {
   await promise;
 
   expect(messenger.data.slack).toBe(1);
+  expect(messenger.data.gitlab).toBe(0);
   expect(!!promise).toBe(true);
 });
 
@@ -32,5 +33,6 @@ test("unknown", async () => {
   await promise;
 
   expect(messenger.data.slack).toBe(0);
+  expect(messenger.data.gitlab).toBe(0);
   expect(!!promise).toBe(false);
 });
