@@ -1,4 +1,10 @@
+stages:
+  - test
+  - build
+  - release
+
 test:
+  stage: test
   only:
     refs:
       - merge_requests
@@ -13,7 +19,23 @@ test:
   script:
     - npm test
 
+build:
+  stage: build
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+
+  image: node:10.16.0-stretch
+
+  before_script:
+    - npm install
+  script:
+    - npm test
+
 release:
+  stage: release
   only:
     refs:
       - triggers
