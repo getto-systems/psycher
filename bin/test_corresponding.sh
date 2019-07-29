@@ -6,6 +6,5 @@ jest=./node_modules/.bin/jest
 test_target=test/${target%.js}.test.js
 
 if [ -f "$test_target" ]; then
-  echo "test: $test_target"
   "$jest" $test_target
 fi

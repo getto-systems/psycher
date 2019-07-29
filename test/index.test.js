@@ -1,5 +1,3 @@
-const app = require("../src/index.js");
-
 test("load successful", () => {
-  expect(1).toBe(1)
+  const app = require("../src/index.js");
 });

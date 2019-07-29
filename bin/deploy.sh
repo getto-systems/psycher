@@ -1,7 +1,7 @@
 #!/bin/bash
 
-template=template.yaml
-packaged=packaged-template.yaml
+template=config/template.yaml
+packaged=config/packaged-template.yaml
 
 stack=$CLOUDFORMATION_STACK
 region=$CLOUDFORMATION_REGION
