@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.1.7
+
+fix: lib <- src See merge request getto-psycher/slack!18
+
+
 ## Version : 0.1.6
 
 
