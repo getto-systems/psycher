@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.1.3
+
+fix: gitlab-ci See merge request getto-psycher/slack!16
+
+
 ## Version : 0.1.2
 
 fix: gitlab-ci See merge request getto-psycher/slack!15
