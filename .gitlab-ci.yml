@@ -1,6 +1,10 @@
 test:
   only:
-    - merge_requests
+    refs:
+      - merge_requests
+    changes:
+      - src/**/*
+      - test/**/*
 
   image: node:10.16.0-stretch
 
