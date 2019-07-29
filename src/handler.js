@@ -17,7 +17,7 @@ const init = (bot_event, messenger) => {
         return promise;
       }
       return handler.handle_event(bot_event, messenger);
-    });
+    }, null);
   };
 
   return {

@@ -12,10 +12,12 @@ test("release mention", async () => {
     text: "<@USERID> リリース",
   });
 
-  await greeting.handle_event(bot_event, messenger);
+  const promise = greeting.handle_event(bot_event, messenger);
+  await promise;
 
   expect(messenger.data.slack).toBe(1);
   expect(messenger.data.gitlab).toBe(1);
+  expect(!!promise).toBe(true);
 });
 
 test("release message", async () => {
@@ -27,8 +29,10 @@ test("release message", async () => {
     text: "リリース",
   });
 
-  await greeting.handle_event(bot_event, messenger);
+  const promise = greeting.handle_event(bot_event, messenger);
+  await promise;
 
   expect(messenger.data.slack).toBe(0);
   expect(messenger.data.gitlab).toBe(0);
+  expect(!!promise).toBe(false);
 });
