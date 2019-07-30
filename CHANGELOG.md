@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.7.0
+
+fix: gitlab-ci See merge request getto-psycher/slack!26
+
+
 ## Version : 0.6.0
 
 fix: form-data See merge request getto-psycher/slack!25
