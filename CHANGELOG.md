@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.7.2
+
+fix: notify.sh See merge request getto-psycher/slack!28
+
+
 ## Version : 0.7.1
 
 fix: notify.sh mode See merge request getto-psycher/slack!27
