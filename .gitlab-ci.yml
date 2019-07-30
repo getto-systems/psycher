@@ -19,6 +19,7 @@ test:
   image: node:10.16.0-stretch
 
   before_script:
+    - rm -rf node_modules
     - npm install
   script:
     - npm test
@@ -34,6 +35,7 @@ build:
   image: node:10.16.0-stretch
 
   before_script:
+    - rm -rf node_modules
     - npm install
   script:
     - npm test
