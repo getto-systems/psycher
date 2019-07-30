@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.1.11
+
+fix: handler test See merge request getto-psycher/slack!19
+
+
 ## Version : 0.1.10
 
 
