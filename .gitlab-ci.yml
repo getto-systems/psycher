@@ -51,6 +51,7 @@ release:
   cache:
     paths:
       - node_modules
+    policy: pull
 
   image: python:3.7.4
 
