@@ -2,6 +2,7 @@ stages:
   - test
   - build
   - release
+  - notify
 
 cache:
   paths:
@@ -56,3 +57,31 @@ release:
     - ./bin/version_dump.sh
     - ./bin/push_tags.sh
     - ./bin/deploy.sh
+
+release_success:
+  stage: notify
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+  when: on_success
+
+  image: buildpack-deps:disco-curl
+
+  script:
+    - ./bin/notify.sh success
+
+release_failure:
+  stage: notify
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+  when: on_failure
+
+  image: buildpack-deps:disco-curl
+
+  script:
+    - ./bin/notify.sh failure
