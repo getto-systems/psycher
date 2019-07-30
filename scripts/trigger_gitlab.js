@@ -14,9 +14,15 @@ const secret = psycher_secret.init({
     bot_token: process.env.SLACK_BOT_TOKEN,
   },
   gitlab: {
-    user_id: process.env.GITLAB_USER_ID,
     release_targets: { "CHANNEL": "slack" },
-    trigger_tokens: { "CHANNEL": { "slack": process.env.GITLAB_TRIGGER_TOKEN } },
+    trigger_tokens: {
+      "CHANNEL": {
+        "slack": {
+          project_id: process.env.GITLAB_PROJECT_ID,
+          token: process.env.GITLAB_TRIGGER_TOKEN,
+        },
+      },
+    },
   },
 });
 
