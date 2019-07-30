@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 0.2.0
+
+fix: find gitlab token See merge request getto-psycher/slack!21
+fix: gitlab-ci See merge request getto-psycher/slack!20
+
+
 ## Version : 0.1.11
 
 fix: handler test See merge request getto-psycher/slack!19
