@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.0.0
+
+production ready! See merge request getto-psycher/slack!33
+
+
 ## Version : 0.8.1
 
 
