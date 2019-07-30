@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.4.0
+
+fix: form-data See merge request getto-psycher/slack!23
+
+
 ## Version : 0.3.1
 
 
