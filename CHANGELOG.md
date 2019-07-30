@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.3.0
+
+fix: form-data See merge request getto-psycher/slack!22
+
+
 ## Version : 0.2.0
 
 fix: find gitlab token See merge request getto-psycher/slack!21
