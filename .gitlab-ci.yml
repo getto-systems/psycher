@@ -69,7 +69,7 @@ release_success:
 
   image: buildpack-deps:disco-curl
 
-  after_script:
+  script:
     - ./bin/notify.sh success
 
 release_failure:
@@ -83,5 +83,5 @@ release_failure:
 
   image: buildpack-deps:disco-curl
 
-  after_script:
+  script:
     - ./bin/notify.sh failure
