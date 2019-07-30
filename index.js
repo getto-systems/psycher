@@ -52,7 +52,6 @@ const init_handler = (raw_event, aws_secret) => {
       bot_token: aws_secret["slack-bot-token"],
     },
     gitlab: {
-      user_id: aws_secret["gitlab-user-id"],
       release_targets: parse_object(aws_secret["gitlab-release-targets"]),
       trigger_tokens: parse_object(aws_secret["gitlab-trigger-tokens"]),
     },

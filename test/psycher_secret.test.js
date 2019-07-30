@@ -7,14 +7,12 @@ test("properties", () => {
       bot_token: "SLACK_BOT_TOKEN",
     },
     gitlab: {
-      user_id: "GITLAB_USER_ID",
       release_targets: {},
       trigger_tokens: {},
     },
   });
 
   expect(secret.slack.bot_token).toBe("SLACK_BOT_TOKEN");
-  expect(secret.gitlab.user_id).toBe("GITLAB_USER_ID");
 });
 
 test("find elm token", () => {
@@ -23,9 +21,8 @@ test("find elm token", () => {
       bot_token: "",
     },
     gitlab: {
-      user_id: "",
       release_targets: { "CHANNEL": "elm,rails" },
-      trigger_tokens: { "CHANNEL": { "elm": "ELM_TOKEN", "rails": "RAILS_TOKEN" } },
+      trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
     },
   });
 
@@ -36,7 +33,8 @@ test("find elm token", () => {
     text: "elm",
   });
 
-  expect(secret.gitlab.find_token(bot_event)).toBe("ELM_TOKEN");
+  expect(secret.gitlab.find_token(bot_event).project_id).toBe("ELM_PROJECT_ID");
+  expect(secret.gitlab.find_token(bot_event).token).toBe("ELM_TOKEN");
 });
 
 test("find token failed", () => {
@@ -45,9 +43,8 @@ test("find token failed", () => {
       bot_token: "",
     },
     gitlab: {
-      user_id: "",
       release_targets: { "CHANNEL": "elm,rails" },
-      trigger_tokens: { "CHANNEL": { "elm": "ELM_TOKEN", "rails": "RAILS_TOKEN" } },
+      trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
     },
   });
 
