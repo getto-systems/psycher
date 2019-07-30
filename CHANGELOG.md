@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 0.7.1
+
+fix: notify.sh mode See merge request getto-psycher/slack!27
+
+
 ## Version : 0.7.0
 
 fix: gitlab-ci See merge request getto-psycher/slack!26
