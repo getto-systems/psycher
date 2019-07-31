@@ -14,7 +14,6 @@ const secret = psycher_secret.init({
     bot_token: process.env.SLACK_BOT_TOKEN,
   },
   gitlab: {
-    release_targets: {},
     trigger_tokens: {},
   },
 });
