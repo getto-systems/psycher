@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.2.0
+
+fix: random reply See merge request getto-psycher/slack!35
+
+
 ## Version : 1.1.0
 
 add: outgoing info See merge request getto-psycher/slack!34
