@@ -14,8 +14,9 @@ test("handle release mention", async () => {
 
   await handler.init(bot_event, messenger).handle_event();
 
-  expect(messenger.data.slack).toBe(1);
-  expect(messenger.data.gitlab).toBe(1);
+  expect(messenger.data.slack.message.length).toBe(0);
+  expect(messenger.data.slack.reaction[0]).toBe("release-triggered");
+  expect(messenger.data.gitlab[0]).toBe("release");
 });
 
 test("handle greeting mention", async () => {
@@ -29,8 +30,9 @@ test("handle greeting mention", async () => {
 
   await handler.init(bot_event, messenger).handle_event();
 
-  expect(messenger.data.slack).toBe(1);
-  expect(messenger.data.gitlab).toBe(0);
+  expect(messenger.data.slack.message[0]).toBe("greeting");
+  expect(messenger.data.slack.reaction.length).toBe(0);
+  expect(messenger.data.gitlab.length).toBe(0);
 });
 
 test("handle unknown mention", async () => {
@@ -44,8 +46,9 @@ test("handle unknown mention", async () => {
 
   await handler.init(bot_event, messenger).handle_event();
 
-  expect(messenger.data.slack).toBe(1);
-  expect(messenger.data.gitlab).toBe(0);
+  expect(messenger.data.slack.message[0]).toBe("unknown-mention");
+  expect(messenger.data.slack.reaction.length).toBe(0);
+  expect(messenger.data.gitlab.length).toBe(0);
 });
 
 test("handle message", async () => {
@@ -59,6 +62,7 @@ test("handle message", async () => {
 
   await handler.init(bot_event, messenger).handle_event();
 
-  expect(messenger.data.slack).toBe(0);
-  expect(messenger.data.gitlab).toBe(0);
+  expect(messenger.data.slack.message.length).toBe(0);
+  expect(messenger.data.slack.reaction.length).toBe(0);
+  expect(messenger.data.gitlab.length).toBe(0);
 });
