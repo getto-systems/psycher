@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.3.1
+
+fix: gitlab-ci See merge request getto-psycher/slack!37
+
+
 ## Version : 1.3.0
 
 remove: release-targets See merge request getto-psycher/slack!36
