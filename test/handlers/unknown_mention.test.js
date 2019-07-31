@@ -15,8 +15,9 @@ test("unknown mention", async () => {
   const promise = greeting.handle_event(bot_event, messenger);
   await promise;
 
-  expect(messenger.data.slack).toBe(1);
-  expect(messenger.data.gitlab).toBe(0);
+  expect(messenger.data.slack.message[0]).toBe("unknown-mention");
+  expect(messenger.data.slack.reaction.length).toBe(0);
+  expect(messenger.data.gitlab.length).toBe(0);
   expect(!!promise).toBe(true);
 });
 
@@ -32,7 +33,8 @@ test("unknown message", async () => {
   const promise = greeting.handle_event(bot_event, messenger);
   await promise;
 
-  expect(messenger.data.slack).toBe(0);
-  expect(messenger.data.gitlab).toBe(0);
+  expect(messenger.data.slack.message.length).toBe(0);
+  expect(messenger.data.slack.reaction.length).toBe(0);
+  expect(messenger.data.gitlab.length).toBe(0);
   expect(!!promise).toBe(false);
 });
