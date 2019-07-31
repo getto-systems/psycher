@@ -7,7 +7,6 @@ test("properties", () => {
       bot_token: "SLACK_BOT_TOKEN",
     },
     gitlab: {
-      release_targets: {},
       trigger_tokens: {},
     },
   });
@@ -21,7 +20,6 @@ test("find elm token", () => {
       bot_token: "",
     },
     gitlab: {
-      release_targets: { "CHANNEL": "elm,rails" },
       trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
     },
   });
@@ -43,7 +41,6 @@ test("find token failed", () => {
       bot_token: "",
     },
     gitlab: {
-      release_targets: { "CHANNEL": "elm,rails" },
       trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
     },
   });
