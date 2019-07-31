@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.3.0
+
+remove: release-targets See merge request getto-psycher/slack!36
+
+
 ## Version : 1.2.0
 
 fix: random reply See merge request getto-psycher/slack!35
