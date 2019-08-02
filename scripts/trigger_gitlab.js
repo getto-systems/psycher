@@ -4,6 +4,7 @@ const gitlab = require("../lib/outgoing_messengers/gitlab");
 
 const bot_event = slack_bot_event.init({
   type: "app_mention",
+  team: "TEAM",
   channel: "CHANNEL",
   timestamp: "TIMESTAMP",
   text: "<@USERID> リリース",
@@ -15,10 +16,12 @@ const secret = psycher_secret.init({
   },
   gitlab: {
     trigger_tokens: {
-      "CHANNEL": {
-        "slack": {
-          project_id: process.env.GITLAB_PROJECT_ID,
-          token: process.env.GITLAB_TRIGGER_TOKEN,
+      "TEAM": {
+        "CHANNEL": {
+          "slack": {
+            project_id: process.env.GITLAB_PROJECT_ID,
+            token: process.env.GITLAB_TRIGGER_TOKEN,
+          },
         },
       },
     },
