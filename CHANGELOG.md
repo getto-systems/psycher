@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.5.0
+
+fix: fetch package See merge request getto-psycher/slack!39
+
+
 ## Version : 1.4.2
 
 
