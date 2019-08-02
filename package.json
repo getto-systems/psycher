@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "aws-sdk": "^2.502.0",
-    "form-data": "^2.5.0",
-    "https": "^1.0.0"
+    "node-fetch": "^2.6.0"
   }
 }
