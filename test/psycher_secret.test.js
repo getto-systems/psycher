@@ -20,12 +20,17 @@ test("find elm token", () => {
       bot_token: "",
     },
     gitlab: {
-      trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
+      trigger_tokens: {
+        "TEAM": {
+          "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } }
+        }
+      },
     },
   });
 
   const bot_event = slack_bot_event.init({
     type: "app_mention",
+    team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
     text: "elm",
@@ -41,12 +46,17 @@ test("find token failed", () => {
       bot_token: "",
     },
     gitlab: {
-      trigger_tokens: { "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } } },
+      trigger_tokens: {
+        "TEAM": {
+          "CHANNEL": { "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" } }
+        }
+      },
     },
   });
 
   const bot_event = slack_bot_event.init({
     type: "app_mention",
+    team: "UNKNOWN-TEAM",
     channel: "UNKNOWN-CHANNEL",
     timestamp: "TIMESTAMP",
     text: "elm",
