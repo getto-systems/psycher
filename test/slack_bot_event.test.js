@@ -3,11 +3,13 @@ const slack_bot_event = require("../lib/slack_bot_event");
 test("app_mention", () => {
   const bot_event = slack_bot_event.init({
     type: "app_mention",
+    team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
     text: "TEXT",
   });
 
+  expect(bot_event.team).toBe("TEAM");
   expect(bot_event.channel).toBe("CHANNEL");
   expect(bot_event.timestamp).toBe("TIMESTAMP");
   expect(bot_event.is_app_mention).toBe(true);
@@ -17,6 +19,7 @@ test("app_mention", () => {
 test("message.channels", () => {
   const bot_event = slack_bot_event.init({
     type: "message.channels",
+    team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
     text: "TEXT",

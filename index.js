@@ -42,6 +42,7 @@ exports.handler = async (aws_lambda_event) => {
 const init_handler = (raw_event, aws_secret) => {
   const bot_event = slack_bot_event.init({
     type: raw_event.type,
+    team: raw_event.team,
     channel: raw_event.channel,
     timestamp: raw_event.ts,
     text: raw_event.text,
