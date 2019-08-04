@@ -1,7 +1,14 @@
-const slack_bot_event = require("./lib/slack_bot_event");
-const psycher_secret = require("./lib/psycher_secret");
-const outgoing_messenger = require("./lib/outgoing_messenger");
 const handler = require("./lib/handler");
+const slack_bot_event = require("./lib/slack_bot_event");
+
+const slack_secret = require("./lib/secrets/slack");
+const gitlab_secret = require("./lib/secrets/gitlab");
+
+const slack_messenger = require("./lib/outgoing_messengers/slack");
+const gitlab_messenger = require("./lib/outgoing_messengers/gitlab");
+
+const slack_request = require("./lib/outgoing_messengers/requests/slack");
+const gitlab_request = require("./lib/outgoing_messengers/requests/gitlab");
 
 const aws_secret_provider = require("./lib/providers/aws_secret");
 
@@ -40,26 +47,54 @@ exports.handler = async (aws_lambda_event) => {
 };
 
 const init_handler = (raw_event, aws_secret) => {
+  const event_info = init_event_info(raw_event);
+  const secret = init_secret(aws_secret);
+
   const bot_event = slack_bot_event.init({
+    event_info,
+    secret,
+  });
+
+  const messenger = init_messenger();
+
+  return handler.init({
+    bot_event,
+    messenger,
+  });
+};
+
+const init_event_info = (raw_event) => {
+  return {
     type: raw_event.type,
     team: raw_event.team,
     channel: raw_event.channel,
     timestamp: raw_event.ts,
     text: raw_event.text,
+  };
+};
+
+const init_secret = (aws_secret) => {
+  const slack = slack_secret.prepare({
+    bot_token: aws_secret["slack-bot-token"],
+  });
+  const gitlab = gitlab_secret.prepare({
+    trigger_tokens: parse_object(aws_secret["gitlab-trigger-tokens"]),
   });
 
-  const secret = psycher_secret.init({
-    slack: {
-      bot_token: aws_secret["slack-bot-token"],
-    },
-    gitlab: {
-      trigger_tokens: parse_object(aws_secret["gitlab-trigger-tokens"]),
-    },
-  });
+  return {
+    slack,
+    gitlab,
+  };
+};
 
-  const messenger = outgoing_messenger.init(bot_event, secret);
+const init_messenger = () => {
+  const slack = slack_messenger.prepare(slack_request);
+  const gitlab = gitlab_messenger.prepare(gitlab_request);
 
-  return handler.init(bot_event, messenger);
+  return {
+    slack,
+    gitlab,
+  };
 };
 
 const parse_object = (raw) => {
