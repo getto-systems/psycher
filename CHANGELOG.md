@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 1.7.1
+
+
+
 ## Version : 1.7.0
 
 fix: slack_bot_event See merge request getto-psycher/slack!41
