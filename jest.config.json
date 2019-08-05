@@ -1,0 +1,16 @@
+{
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "lib/**/*.js",
+    "!lib/providers/**",
+    "!lib/outgoing_messengers/requests/**"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  }
+}
