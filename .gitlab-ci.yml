@@ -65,6 +65,8 @@ release:
     - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
     - ./bin/push_tags.sh
     - ./bin/deploy.sh
+  after_script:
+    - rm -rf node_modules
 
 release_success:
   stage: notify
