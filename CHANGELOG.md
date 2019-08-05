@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.7.3
+
+add: coverage See merge request getto-psycher/slack!43
+
+
 ## Version : 1.7.2
 
 fix: test case See merge request getto-psycher/slack!42
