@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.7.4
+
+fix: gitlab-ci See merge request getto-psycher/slack!44
+
+
 ## Version : 1.7.3
 
 add: coverage See merge request getto-psycher/slack!43
