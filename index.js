@@ -1,14 +1,14 @@
 const slack_bot_event = require("./lib/slack_bot_event");
 const conversation_factory = require("./lib/conversation");
+
 const handler = require("./lib/handler");
-const state = require("./lib/handler/state");
-const action = require("./lib/handler/action");
 
 const repository = {
-  stream: require("./lib/stream"),
-  pipeline: require("./lib/pipeline"),
   session: require("./lib/session"),
   deployment: require("./lib/deployment"),
+
+  stream: require("./lib/stream"),
+  pipeline: require("./lib/pipeline"),
 };
 
 const infra = {
@@ -66,15 +66,9 @@ const handle = (event_info) => {
   });
   const i18n = i18n_factory.init("ja");
 
-  return handler.operate({
-    state: state.init({
-      conversation,
-      words: i18n.conversation.words,
-    }),
-    action: action.init({
-      conversation,
-      action: i18n.action,
-    }),
+  return handler.init(event_info.type).operate({
+    conversation,
+    i18n,
   });
 };
 

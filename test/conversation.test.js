@@ -25,28 +25,10 @@ test("init conversation", async () => {
     repository,
   });
 
-  expect(conversation.is_mention()).toBe(true);
   expect(conversation.includes("deploy")).toBe(true);
 
   expect(await conversation.is_already_started()).toBe(false);
   expect(await conversation.is_deploy_target_detected()).toBe(true);
-});
-
-test("unknown event type", async () => {
-  const {repository, message_store, job_store} = init_repository();
-
-  const conversation = conversation_factory.init({
-    event_info: {
-      type: "unknown",
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-      text: "deploy elm",
-    },
-    repository,
-  });
-
-  expect(conversation.is_mention()).toBe(false);
 });
 
 test("reply message", async () => {

@@ -2,35 +2,37 @@ exports.init = () => init();
 
 const init = () => {
   return {
-    action: {
-      deploy: {
-        success: "success",
-        failure: "failure",
+    app_mention: {
+      action: {
+        deploy: {
+          success: "success",
+          failure: "failure",
+        },
+        deploy_target_not_found: {
+          messages: [
+            "deploy_target_not_found",
+          ],
+        },
+        greeting: {
+          messages: [
+            "greeting",
+          ],
+        },
+        unknown_mention: {
+          messages: [
+            "unknown_mention",
+          ],
+        },
       },
-      deploy_target_not_found: {
-        messages: [
-          "deploy_target_not_found",
-        ],
-      },
-      greeting: {
-        messages: [
-          "greeting",
-        ],
-      },
-      unknown_mention: {
-        messages: [
-          "unknown_mention",
-        ],
-      },
-    },
-    conversation: {
-      words: {
-        deploy: [
-          "deploy",
-        ],
-        greeting: [
-          "hello",
-        ],
+      conversation: {
+        words: {
+          deploy: [
+            "deploy",
+          ],
+          greeting: [
+            "hello",
+          ],
+        },
       },
     },
   };
