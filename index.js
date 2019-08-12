@@ -78,10 +78,10 @@ const handle = (conversation) => {
     gitlab_api: vendor.gitlab_api.init(),
   });
 
-  const deployment = repository.deployment.init({
+  const session = repository.session.init({
     document_store,
   });
-  const session = repository.session.init({
+  const deployment = repository.deployment.init({
     secret_store,
   });
 
