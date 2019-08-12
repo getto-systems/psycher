@@ -1,143 +1,229 @@
-const slack_messenger = require("../lib/outgoing_messengers/slack");
-const gitlab_messenger = require("../lib/outgoing_messengers/gitlab");
-
-const slack_request = require("./outgoing_messengers/requests/slack");
-const gitlab_request = require("./outgoing_messengers/requests/gitlab");
-
-const slack_secret = require("../lib/secrets/slack");
-const gitlab_secret = require("../lib/secrets/gitlab");
-
-const slack_bot_event = require("../lib/slack_bot_event");
 const handler = require("../lib/handler");
 
-test("handle release mention", async () => {
-  const mock = init_mock();
+const slack_bot_event = require("../lib/slack_bot_event");
 
-  await init_handler(mock, {
+const session_factory = require("../lib/conversation/session");
+const deployment_factory = require("../lib/conversation/deployment");
+
+const stream_factory = require("../lib/stream");
+const pipeline_factory = require("../lib/pipeline");
+
+const document_store_factory = require("./infra/document_store");
+const secret_store_factory = require("./infra/secret_store");
+const message_store_factory = require("./infra/message_store");
+const job_store_factory = require("./infra/job_store");
+
+const i18n_factory = require("./i18n");
+
+test("deploy elm", async () => {
+  const struct = init_struct({
+    put: true,
     type: "app_mention",
-    team: "TEAM",
+    text: "deploy elm",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(1);
+  expect(JSON.stringify(struct.message_store.data.add[0])).toBe(JSON.stringify({
+    token: "MESSAGE-TOKEN",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
-    text: "リリース elm",
-  }).handle_event();
+    name: "success",
+  }));
 
-  expect(mock.slack.data.reply.length).toBe(0);
-  expect(mock.slack.data.reaction.length).toBe(1);
-  expect(mock.slack.data.reaction[0]).toBe("release-triggered");
-
-  expect(mock.gitlab.data.trigger.length).toBe(1);
-  expect(mock.gitlab.data.trigger[0]).toBe("release");
+  expect(struct.job_store.data.deploy.length).toBe(1);
+  expect(JSON.stringify(struct.job_store.data.deploy[0])).toBe(JSON.stringify({
+    project_id: "ELM-PROJECT-ID",
+    token: "ELM-TOKEN",
+    channel: "CHANNEL",
+    timestamp: "TIMESTAMP",
+  }));
 });
 
-test("handle unknown release mention", async () => {
-  const mock = init_mock();
-
-  await init_handler(mock, {
+test("deploy error", async () => {
+  const struct = init_struct({
+    put: true,
     type: "app_mention",
-    team: "TEAM",
+    deploy_error: "deploy-error",
+    text: "deploy elm",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(1);
+  expect(JSON.stringify(struct.message_store.data.add[0])).toBe(JSON.stringify({
+    token: "MESSAGE-TOKEN",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
-    text: "リリース",
-  }).handle_event();
+    name: "failure",
+  }));
 
-  expect(mock.slack.data.reply.length).toBe(1);
-  expect(mock.slack.data.reply[0]).toBe("unknown-release");
-  expect(mock.slack.data.reaction.length).toBe(0);
-
-  expect(mock.gitlab.data.trigger.length).toBe(0);
+  expect(struct.job_store.data.deploy.length).toBe(0);
 });
 
-test("handle greeting mention", async () => {
-  const mock = init_mock();
-
-  await init_handler(mock, {
+test("deploy target not found", async () => {
+  const struct = init_struct({
+    put: true,
     type: "app_mention",
-    team: "TEAM",
+    text: "deploy unknown",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+    token: "MESSAGE-TOKEN",
     channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
-    text: "よろ",
-  }).handle_event();
+    text: "deploy_target_not_found",
+  }));
 
-  expect(mock.slack.data.reply.length).toBe(1);
-  expect(mock.slack.data.reply[0]).toBe("greeting");
-  expect(mock.slack.data.reaction.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(0);
 
-  expect(mock.gitlab.data.trigger.length).toBe(0);
+  expect(struct.job_store.data.deploy.length).toBe(0);
 });
 
-test("handle unknown mention", async () => {
-  const mock = init_mock();
-
-  await init_handler(mock, {
+test("greeting", async () => {
+  const struct = init_struct({
+    put: true,
     type: "app_mention",
-    team: "TEAM",
+    text: "hello",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+    token: "MESSAGE-TOKEN",
     channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
-    text: "何か面白いこと言って",
-  }).handle_event();
+    text: "greeting",
+  }));
 
-  expect(mock.slack.data.reply.length).toBe(1);
-  expect(mock.slack.data.reply[0]).toBe("unknown-mention");
-  expect(mock.slack.data.reaction.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(0);
 
-  expect(mock.gitlab.data.trigger.length).toBe(0);
+  expect(struct.job_store.data.deploy.length).toBe(0);
+});
+
+test("unknown mention", async () => {
+  const struct = init_struct({
+    put: true,
+    type: "app_mention",
+    text: "unknown",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+    token: "MESSAGE-TOKEN",
+    channel: "CHANNEL",
+    text: "unknown_mention",
+  }));
+
+  expect(struct.message_store.data.add.length).toBe(0);
+
+  expect(struct.job_store.data.deploy.length).toBe(0);
 });
 
 test("unknown event", async () => {
-  const mock = init_mock();
-
-  await init_handler(mock, {
-    type: "unknown_event",
-    team: "TEAM",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
-    text: "TEXT",
-  }).handle_event();
-
-  expect(mock.slack.data.reply.length).toBe(0);
-  expect(mock.slack.data.reaction.length).toBe(0);
-
-  expect(mock.gitlab.data.trigger.length).toBe(0);
-});
-
-const init_handler = (mock, event_info) => {
-  const raw_slack_secret = {
-    bot_token: "SLACK_BOT_TOKEN",
-  };
-  const raw_gitlab_secret = {
-    trigger_tokens: {
-      "TEAM": {
-        "CHANNEL": {
-          "elm": { project_id: "ELM_PROJECT_ID", token: "ELM_TOKEN" },
-          "rails": { project_id: "RAILS_PROJECT_ID", token: "RAILS_TOKEN" },
-        }
-      },
-    },
-  };
-  const secret = {
-    slack: slack_secret.prepare(raw_slack_secret),
-    gitlab: gitlab_secret.prepare(raw_gitlab_secret),
-  };
-
-  const bot_event = slack_bot_event.init({
-    event_info,
-    secret,
+  const struct = init_struct({
+    put: true,
+    type: "unknown-event",
+    text: "unknown",
   });
 
-  const messenger = {
-    slack: slack_messenger.prepare(mock.slack),
-    gitlab: gitlab_messenger.prepare(mock.gitlab),
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(0);
+  expect(struct.job_store.data.deploy.length).toBe(0);
+});
+
+test("do not duplicate deploy", async () => {
+  const struct = init_struct({
+    put: false,
+    type: "app_mention",
+    text: "deploy elm",
+  });
+
+  const action = await handler.detect_action(struct);
+
+  await action.perform();
+
+  expect(struct.message_store.data.post.length).toBe(0);
+  expect(struct.message_store.data.add.length).toBe(0);
+  expect(struct.job_store.data.deploy.length).toBe(0);
+});
+
+const init_struct = ({put, type, deploy_error, text}) => {
+  const secret_store = secret_store_factory.init({
+    message_token: "MESSAGE-TOKEN",
+    job_tokens: {
+      elm: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
+      rails: {project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"},
+    },
+  });
+  const message_store = message_store_factory.init();
+  const job_store = job_store_factory.init({
+    deploy_error,
+  });
+
+  const session = session_factory.init({
+    document_store: document_store_factory.init({
+      put,
+    }),
+  });
+  const deployment = deployment_factory.init({
+    secret_store,
+  });
+
+  const i18n = i18n_factory.init();
+
+  const conversation = slack_bot_event.parse({
+    raw_event: {
+      type,
+      team: "TEAM",
+      channel: "CHANNEL",
+      ts: "TIMESTAMP",
+      text,
+    },
+    repository: {
+      session,
+      deployment,
+    },
+    i18n,
+  });
+
+  const repository = {
+    stream: stream_factory.init({
+      secret_store,
+      message_store,
+    }),
+    pipeline: pipeline_factory.init({
+      secret_store,
+      job_store,
+    }),
   };
 
-  return handler.init({bot_event, messenger});
-};
-
-const init_mock = () => {
-  const slack = slack_request.init();
-  const gitlab = gitlab_request.init();
-
   return {
-    slack,
-    gitlab,
+    conversation,
+    repository,
+    i18n,
+    message_store,
+    job_store,
   };
 };
