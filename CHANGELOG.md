@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.9.0
+
+add: debug log See merge request getto-psycher/slack!47
+
+
 ## Version : 1.8.0
 
 refactor: model names See merge request getto-psycher/slack!46
