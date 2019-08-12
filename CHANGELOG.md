@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.13.0
+
+refactor: repository See merge request getto-psycher/slack!52
+
+
 ## Version : 1.12.1
 
 
