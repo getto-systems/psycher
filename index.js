@@ -1,19 +1,35 @@
 const handler = require("./lib/handler");
 const slack_bot_event = require("./lib/slack_bot_event");
 
-const slack_secret = require("./lib/secrets/slack");
-const gitlab_secret = require("./lib/secrets/gitlab");
+const repository = {
+  stream: require("./lib/stream"),
+  pipeline: require("./lib/pipeline"),
+  conversation: {
+    session: require("./lib/conversation/session"),
+    deployment: require("./lib/conversation/deployment"),
+  },
+};
 
-const slack_messenger = require("./lib/outgoing_messengers/slack");
-const gitlab_messenger = require("./lib/outgoing_messengers/gitlab");
+const infra = {
+  document_store: require("./lib/infra/document_store"),
+  secret_store: require("./lib/infra/secret_store"),
 
-const slack_request = require("./lib/outgoing_messengers/requests/slack");
-const gitlab_request = require("./lib/outgoing_messengers/requests/gitlab");
+  message_store: require("./lib/infra/message_store"),
+  job_store: require("./lib/infra/job_store"),
+};
 
-const aws_secret_provider = require("./lib/providers/aws_secret");
+const vendor = {
+  aws_dynamodb: require("./vendor/aws_dynamodb"),
+  aws_secrets: require("./vendor/aws_secrets"),
+
+  slack_api: require("./vendor/slack_api"),
+  gitlab_api: require("./vendor/gitlab_api"),
+};
+
+const i18n_factory = require("./lib/i18n");
 
 exports.handler = async (aws_lambda_event) => {
-  // logging event object for debug real-world slack event
+  // logging event object for debug real-world event
   console.log(aws_lambda_event);
 
   const body = parse_json(aws_lambda_event.body);
@@ -30,11 +46,7 @@ exports.handler = async (aws_lambda_event) => {
   // there is no event on challenge-request
   const raw_event = body.event;
   if (raw_event) {
-    const aws_secret = await aws_secret_provider.get({
-      region: process.env.REGION,
-      secret_id: process.env.SECRET_ID,
-    });
-    await init_handler(raw_event, aws_secret).handle_event();
+    await handle_event(raw_event);
   }
 
   // response to challenge-request
@@ -46,63 +58,57 @@ exports.handler = async (aws_lambda_event) => {
   };
 };
 
-const init_handler = (raw_event, aws_secret) => {
-  const event_info = init_event_info(raw_event);
-  const secret = init_secret(aws_secret);
-
-  const bot_event = slack_bot_event.init({
-    event_info,
-    secret,
+const handle_event = async (raw_event) => {
+  const document_store = infra.document_store.init({
+    aws_dynamodb: vendor.aws_dynamodb.init({
+      region: process.env.REGION,
+    }),
+  });
+  const secret_store = infra.secret_store.init({
+    aws_secrets: vendor.aws_secrets.init({
+      region: process.env.REGION,
+      secret_id: process.env.SECRET_ID,
+    }),
   });
 
-  const messenger = init_messenger();
-
-  return handler.init({
-    bot_event,
-    messenger,
+  const message_store = infra.message_store.init({
+    slack_api: vendor.slack_api.init(),
   });
-};
-
-const init_event_info = (raw_event) => {
-  return {
-    type: raw_event.type,
-    team: raw_event.team,
-    channel: raw_event.channel,
-    timestamp: raw_event.ts,
-    text: raw_event.text,
-  };
-};
-
-const init_secret = (aws_secret) => {
-  const slack = slack_secret.prepare({
-    bot_token: aws_secret["slack-bot-token"],
-  });
-  const gitlab = gitlab_secret.prepare({
-    trigger_tokens: parse_object(aws_secret["gitlab-trigger-tokens"]),
+  const job_store = infra.job_store.init({
+    gitlab_api: vendor.gitlab_api.init(),
   });
 
-  return {
-    slack,
-    gitlab,
-  };
-};
+  const i18n = i18n_factory.init("ja");
 
-const init_messenger = () => {
-  const slack = slack_messenger.prepare(slack_request);
-  const gitlab = gitlab_messenger.prepare(gitlab_request);
+  const conversation = slack_bot_event.parse({
+    raw_event,
+    repository: {
+      session: repository.conversation.session.init({
+        document_store,
+      }),
+      deployment: repository.conversation.deployment.init({
+        secret_store,
+      }),
+    },
+    i18n,
+  });
 
-  return {
-    slack,
-    gitlab,
-  };
-};
+  const action = await handler.detect_action({
+    conversation,
+    repository: {
+      stream: repository.stream.init({
+        secret_store,
+        message_store,
+      }),
+      pipeline: repository.pipeline.init({
+        secret_store,
+        job_store,
+      }),
+    },
+    i18n,
+  });
 
-const parse_object = (raw) => {
-  const value = parse_json(raw);
-  if (!value) {
-    return {};
-  }
-  return value;
+  await action.perform();
 };
 
 const parse_json = (raw) => {

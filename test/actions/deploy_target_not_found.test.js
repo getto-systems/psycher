@@ -1,4 +1,4 @@
-const unknown_mention = require("../../lib/actions/unknown_mention");
+const deploy_target_not_found = require("../../lib/actions/deploy_target_not_found");
 
 const slack_bot_event = require("../../lib/slack_bot_event");
 
@@ -15,10 +15,10 @@ const job_store_factory = require("../infra/job_store");
 
 const i18n_factory = require("../i18n");
 
-test("unknown mention", async () => {
+test("deploy target not found", async () => {
   const struct = init_struct();
 
-  const action = unknown_mention.init(struct);
+  const action = deploy_target_not_found.init(struct);
 
   await action.perform();
 
@@ -26,7 +26,7 @@ test("unknown mention", async () => {
   expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
     channel: "CHANNEL",
-    text: "unknown_mention",
+    text: "deploy_target_not_found",
   }));
 
   expect(struct.message_store.data.add.length).toBe(0);

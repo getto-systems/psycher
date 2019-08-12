@@ -3,7 +3,7 @@
   "scripts": {
     "start": "npm run watch",
     "watch": "npm run watch:lib & npm run watch:test",
-    "watch:lib": "exec-on-changed -d ./lib -f ./bin/test_corresponding.sh",
+    "watch:lib": "exec-on-changed -d ./lib -f ./bin/test.sh",
     "watch:test": "exec-on-changed -d ./test -f ./bin/test.sh",
     "test": "jest --config jest.config.json"
   },
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.502.0",
+    "getto-memoize": "^1.0.0",
     "node-fetch": "^2.6.0"
   }
 }

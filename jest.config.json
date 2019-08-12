@@ -1,9 +1,7 @@
 {
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "lib/**/*.js",
-    "!lib/providers/**",
-    "!lib/outgoing_messengers/requests/**"
+    "lib/**/*.js"
   ],
   "coverageThreshold": {
     "global": {
