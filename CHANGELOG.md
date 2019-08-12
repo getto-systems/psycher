@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.14.0
+
+fix: parse body See merge request getto-psycher/slack!53
+
+
 ## Version : 1.13.0
 
 refactor: repository See merge request getto-psycher/slack!52
