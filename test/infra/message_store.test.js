@@ -1,15 +1,13 @@
 const message_store = require("../../lib/infra/message_store");
 
 test("post", async () => {
-  const slack_api = init_slack_api();
-
-  const store = message_store.init({
-    slack_api,
-  });
+  const {store, slack_api} = init_message_store();
 
   await store.post({
     token: "TOKEN",
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+    },
     text: "TEXT",
   });
 
@@ -22,16 +20,14 @@ test("post", async () => {
 });
 
 test("add", async () => {
-  const slack_api = init_slack_api();
-
-  const store = message_store.init({
-    slack_api,
-  });
+  const {store, slack_api} = init_message_store();
 
   await store.add({
     token: "TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     name: "NAME",
   });
 
@@ -43,6 +39,19 @@ test("add", async () => {
     name: "NAME",
   }));
 });
+
+const init_message_store = () => {
+  const slack_api = init_slack_api();
+
+  const store = message_store.init({
+    slack_api,
+  });
+
+  return {
+    store,
+    slack_api,
+  };
+};
 
 const init_slack_api = () => {
   let data = {

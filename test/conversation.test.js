@@ -1,209 +1,116 @@
 const slack_bot_event = require("../lib/slack_bot_event");
 
-const session_factory = require("../lib/conversation/session");
-const deployment_factory = require("../lib/conversation/deployment");
-
-const document_store_factory = require("./infra/document_store");
-const secret_store_factory = require("./infra/secret_store");
-
-const i18n_factory = require("./i18n");
-
-test("deploy elm", async () => {
-  const session = session_factory.init({
-    document_store: document_store_factory.init({
-      put: false,
-    }),
-  });
-
-  const deployment = deployment_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {},
-        rails: {},
-      },
-    }),
-  });
-
+test("init conversation", async () => {
   const conversation = slack_bot_event.parse({
-    raw_event: {
+    event: {
       type: "app_mention",
       team: "TEAM",
       channel: "CHANNEL",
       ts: "TIMESTAMP",
       text: "deploy elm",
     },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n: i18n_factory.init(),
   });
 
-  expect(conversation.team).toBe("TEAM");
-  expect(conversation.channel).toBe("CHANNEL");
-  expect(conversation.timestamp).toBe("TIMESTAMP");
-  expect(conversation.text).toBe("deploy elm");
-
-  expect(conversation.is_deploy()).toBe(true);
-  expect(await conversation.has_deploy_target()).toBe(true);
-  expect(await conversation.deploy_target()).toBe("elm");
-
-  expect(conversation.is_greeting()).toBe(false);
   expect(conversation.is_mention()).toBe(true);
+  expect(conversation.includes("deploy")).toBe(true);
+
+  expect(JSON.stringify(conversation.session_id())).toBe(JSON.stringify({
+    team: "TEAM",
+    channel: "CHANNEL",
+    timestamp: "TIMESTAMP",
+  }));
+  expect(JSON.stringify(conversation.reply_to())).toBe(JSON.stringify({
+    channel: "CHANNEL",
+    timestamp: "TIMESTAMP",
+  }));
+  expect(JSON.stringify(conversation.job_signature())).toBe(JSON.stringify({
+    team: "TEAM",
+    channel: "CHANNEL",
+  }));
 });
 
-test("unknown deploy target", async () => {
-  const session = session_factory.init({
-    document_store: document_store_factory.init({
-      put: false,
-    }),
-  });
-
-  const deployment = deployment_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {},
-        rails: {},
-      },
-    }),
-  });
-
+test("unknown event type", async () => {
   const conversation = slack_bot_event.parse({
-    raw_event: {
-      type: "app_mention",
-      team: "TEAM",
-      channel: "CHANNEL",
-      ts: "TIMESTAMP",
-      text: "deploy unknown",
-    },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n: i18n_factory.init(),
-  });
-
-  expect(conversation.is_deploy()).toBe(true);
-  expect(await conversation.has_deploy_target()).toBe(false);
-  expect(await conversation.deploy_target()).toBe(null);
-
-  expect(conversation.is_greeting()).toBe(false);
-  expect(conversation.is_mention()).toBe(true);
-});
-
-test("greeting", async () => {
-  const session = session_factory.init({
-    document_store: document_store_factory.init({
-      put: false,
-    }),
-  });
-
-  const deployment = deployment_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {},
-        rails: {},
-      },
-    }),
-  });
-
-  const conversation = slack_bot_event.parse({
-    raw_event: {
-      type: "app_mention",
-      team: "TEAM",
-      channel: "CHANNEL",
-      ts: "TIMESTAMP",
-      text: "hello",
-    },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n: i18n_factory.init(),
-  });
-
-  expect(conversation.is_deploy()).toBe(false);
-  expect(await conversation.has_deploy_target()).toBe(false);
-  expect(await conversation.deploy_target()).toBe(null);
-
-  expect(conversation.is_greeting()).toBe(true);
-  expect(conversation.is_mention()).toBe(true);
-});
-
-test("unknown mention", async () => {
-  const session = session_factory.init({
-    document_store: document_store_factory.init({
-      put: false,
-    }),
-  });
-
-  const deployment = deployment_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {},
-        rails: {},
-      },
-    }),
-  });
-
-  const conversation = slack_bot_event.parse({
-    raw_event: {
-      type: "app_mention",
-      team: "TEAM",
-      channel: "CHANNEL",
-      ts: "TIMESTAMP",
-      text: "unknown message",
-    },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n: i18n_factory.init(),
-  });
-
-  expect(conversation.is_deploy()).toBe(false);
-  expect(await conversation.has_deploy_target()).toBe(false);
-  expect(await conversation.deploy_target()).toBe(null);
-
-  expect(conversation.is_greeting()).toBe(false);
-  expect(conversation.is_mention()).toBe(true);
-});
-
-test("unknown event", async () => {
-  const session = session_factory.init({
-    document_store: document_store_factory.init({
-      put: false,
-    }),
-  });
-
-  const deployment = deployment_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {},
-        rails: {},
-      },
-    }),
-  });
-
-  const conversation = slack_bot_event.parse({
-    raw_event: {
+    event: {
       type: "unknown",
       team: "TEAM",
       channel: "CHANNEL",
       ts: "TIMESTAMP",
-      text: "unknown message",
+      text: "deploy elm",
     },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n: i18n_factory.init(),
   });
 
-  expect(conversation.is_deploy()).toBe(false);
-  expect(await conversation.has_deploy_target()).toBe(false);
-  expect(await conversation.deploy_target()).toBe(null);
-
-  expect(conversation.is_greeting()).toBe(false);
   expect(conversation.is_mention()).toBe(false);
+});
+
+test("empty type", async () => {
+  const conversation = slack_bot_event.parse({
+    event: {
+      team: "TEAM",
+      channel: "CHANNEL",
+      ts: "TIMESTAMP",
+      text: "deploy elm",
+    },
+  });
+
+  expect(conversation).toBe(null);
+});
+
+test("empty team", async () => {
+  const conversation = slack_bot_event.parse({
+    event: {
+      type: "app_mention",
+      channel: "CHANNEL",
+      ts: "TIMESTAMP",
+      text: "deploy elm",
+    },
+  });
+
+  expect(conversation).toBe(null);
+});
+
+test("empty channel", async () => {
+  const conversation = slack_bot_event.parse({
+    event: {
+      type: "app_mention",
+      team: "TEAM",
+      ts: "TIMESTAMP",
+      text: "deploy elm",
+    },
+  });
+
+  expect(conversation).toBe(null);
+});
+
+test("empty ts", async () => {
+  const conversation = slack_bot_event.parse({
+    event: {
+      type: "app_mention",
+      team: "TEAM",
+      channel: "CHANNEL",
+      text: "deploy elm",
+    },
+  });
+
+  expect(conversation).toBe(null);
+});
+
+test("empty text", async () => {
+  const conversation = slack_bot_event.parse({
+    event: {
+      type: "app_mention",
+      team: "TEAM",
+      channel: "CHANNEL",
+      ts: "TIMESTAMP",
+    },
+  });
+
+  expect(conversation).toBe(null);
+});
+
+test("empty event", async () => {
+  const conversation = slack_bot_event.parse({
+  });
+
+  expect(conversation).toBe(null);
 });
