@@ -179,6 +179,41 @@ test("do not duplicate deploy", async () => {
 });
 
 const init_struct = ({put, type, deploy_error, text}) => {
+  const {repository, message_store, job_store} = init_repository({
+    put,
+    deploy_error,
+  });
+
+  const conversation = conversation_factory.init({
+    event_info: {
+      type,
+      team: "TEAM",
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+      text,
+    },
+    repository,
+  });
+
+  const i18n = i18n_factory.init();
+
+  return {
+    struct: {
+      state: state.init({
+        conversation,
+        words: i18n.conversation.words,
+      }),
+      action: action.init({
+        conversation,
+        action: i18n.action,
+      }),
+    },
+    message_store,
+    job_store,
+  };
+};
+
+const init_repository = ({put, deploy_error}) => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
     job_tokens: {
@@ -209,46 +244,12 @@ const init_struct = ({put, type, deploy_error, text}) => {
     job_store,
   });
 
-  const i18n = i18n_factory.init();
-
-  const conversation = conversation_factory.init({
-    type,
-    team: "TEAM",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
-    text,
-  });
-
-  const repository = {
-    stream: stream_factory.init({
-      secret_store,
-      message_store,
-    }),
-    pipeline: pipeline_factory.init({
-      secret_store,
-      job_store,
-    }),
-  };
-
   return {
-    struct: {
-      state: state.init({
-        conversation,
-        repository: {
-          deployment,
-          session,
-        },
-        words: i18n.conversation.words,
-      }),
-      action: action.init({
-        conversation,
-        repository: {
-          deployment,
-          stream,
-          pipeline,
-        },
-        action: i18n.action,
-      }),
+    repository: {
+      session,
+      deployment,
+      stream,
+      pipeline,
     },
     message_store,
     job_store,

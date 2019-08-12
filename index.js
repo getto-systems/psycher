@@ -1,4 +1,5 @@
 const slack_bot_event = require("./lib/slack_bot_event");
+const conversation_factory = require("./lib/conversation");
 const handler = require("./lib/handler");
 const state = require("./lib/handler/state");
 const action = require("./lib/handler/action");
@@ -43,10 +44,10 @@ exports.handler = async (aws_lambda_event) => {
     };
   }
 
-  const conversation = slack_bot_event.parse(body);
-  if (conversation) {
-    // there is no conversation in challenge-request
-    await handle(conversation);
+  const event_info = slack_bot_event.parse({body, repository: init_repository});
+  if (event_info) {
+    // there is no conversation event in challenge-request
+    await handle(event_info);
   };
 
   // response to challenge-request
@@ -58,7 +59,26 @@ exports.handler = async (aws_lambda_event) => {
   };
 };
 
-const handle = (conversation) => {
+const handle = (event_info) => {
+  const conversation = conversation_factory.init({
+    event_info,
+    repository: init_repository(),
+  });
+  const i18n = i18n_factory.init("ja");
+
+  return handler.operate({
+    state: state.init({
+      conversation,
+      words: i18n.conversation.words,
+    }),
+    action: action.init({
+      conversation,
+      action: i18n.action,
+    }),
+  });
+};
+
+const init_repository = () => {
   const document_store = infra.document_store.init({
     aws_dynamodb: vendor.aws_dynamodb.init({
       region: process.env.REGION,
@@ -94,27 +114,12 @@ const handle = (conversation) => {
     job_store,
   });
 
-  const i18n = i18n_factory.init("ja");
-
-  return handler.operate({
-    state: state.init({
-      conversation,
-      repository: {
-        deployment,
-        session,
-      },
-      words: i18n.conversation.words,
-    }),
-    action: action.init({
-      conversation,
-      repository: {
-        deployment,
-        stream,
-        pipeline,
-      },
-      action: i18n.action,
-    }),
-  });
+  return {
+    session,
+    deployment,
+    stream,
+    pipeline,
+  };
 };
 
 const parse_json = (raw) => {
