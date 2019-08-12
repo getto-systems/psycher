@@ -70,7 +70,7 @@ const handle = (event_info) => {
 
   return handler.init(event_type).operate({
     conversation,
-    i18n[event_type],
+    i18n: i18n[event_type],
   });
 };
 
