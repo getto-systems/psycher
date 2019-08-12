@@ -44,7 +44,7 @@ exports.handler = async (aws_lambda_event) => {
     };
   }
 
-  const event_info = slack_bot_event.parse({body, repository: init_repository});
+  const event_info = slack_bot_event.parse(body);
   if (event_info) {
     // there is no conversation event in challenge-request
     await handle(event_info);
