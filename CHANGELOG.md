@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.11.0
+
+refactor: state/action See merge request getto-psycher/slack!50
+
+
 ## Version : 1.10.1
 
 
