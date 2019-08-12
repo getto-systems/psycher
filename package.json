@@ -14,8 +14,10 @@
     "jest": "^24.8.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.502.0",
+    "getto-aws_dynamodb": "^1.0.0",
+    "getto-aws_secrets": "^1.0.0",
+    "getto-gitlab_api": "^1.0.1",
     "getto-memoize": "^1.0.0",
-    "node-fetch": "^2.6.0"
+    "getto-slack_api": "^1.0.2"
   }
 }

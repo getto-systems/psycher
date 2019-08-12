@@ -19,11 +19,11 @@ const infra = {
 };
 
 const vendor = {
-  aws_dynamodb: require("./vendor/aws_dynamodb"),
-  aws_secrets: require("./vendor/aws_secrets"),
+  aws_dynamodb: require("getto-aws_dynamodb"),
+  aws_secrets: require("getto-aws_secrets"),
 
-  slack_api: require("./vendor/slack_api"),
-  gitlab_api: require("./vendor/gitlab_api"),
+  slack_api: require("getto-slack_api"),
+  gitlab_api: require("getto-gitlab_api"),
 };
 
 const i18n_factory = require("./lib/i18n");
