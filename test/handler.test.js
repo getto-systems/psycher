@@ -1,9 +1,11 @@
 const handler = require("../lib/handler");
+const state = require("../lib/handler/state");
+const action = require("../lib/handler/action");
 
-const slack_bot_event = require("../lib/slack_bot_event");
+const conversation_factory = require("../lib/conversation");
 
-const session_factory = require("../lib/conversation/session");
-const deployment_factory = require("../lib/conversation/deployment");
+const session_factory = require("../lib/session");
+const deployment_factory = require("../lib/deployment");
 
 const stream_factory = require("../lib/stream");
 const pipeline_factory = require("../lib/pipeline");
@@ -16,157 +18,164 @@ const job_store_factory = require("./infra/job_store");
 const i18n_factory = require("./i18n");
 
 test("deploy elm", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "app_mention",
+    deploy_error: null,
     text: "deploy elm",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(0);
-  expect(struct.message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(struct.message_store.data.add[0])).toBe(JSON.stringify({
+  expect(message_store.data.post.length).toBe(0);
+  expect(message_store.data.add.length).toBe(1);
+  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     name: "success",
   }));
 
-  expect(struct.job_store.data.deploy.length).toBe(1);
-  expect(JSON.stringify(struct.job_store.data.deploy[0])).toBe(JSON.stringify({
+  expect(job_store.data.deploy.length).toBe(1);
+  expect(JSON.stringify(job_store.data.deploy[0])).toBe(JSON.stringify({
     project_id: "ELM-PROJECT-ID",
     token: "ELM-TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
   }));
 });
 
 test("deploy error", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "app_mention",
     deploy_error: "deploy-error",
     text: "deploy elm",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(0);
-  expect(struct.message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(struct.message_store.data.add[0])).toBe(JSON.stringify({
+  expect(message_store.data.post.length).toBe(0);
+  expect(message_store.data.add.length).toBe(1);
+  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     name: "failure",
   }));
 
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 test("deploy target not found", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "app_mention",
+    deploy_error: null,
     text: "deploy unknown",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+  expect(message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     text: "deploy_target_not_found",
   }));
 
-  expect(struct.message_store.data.add.length).toBe(0);
+  expect(message_store.data.add.length).toBe(0);
 
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 test("greeting", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "app_mention",
+    deploy_error: null,
     text: "hello",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+  expect(message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     text: "greeting",
   }));
 
-  expect(struct.message_store.data.add.length).toBe(0);
+  expect(message_store.data.add.length).toBe(0);
 
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 test("unknown mention", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "app_mention",
+    deploy_error: null,
     text: "unknown",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(struct.message_store.data.post[0])).toBe(JSON.stringify({
+  expect(message_store.data.post.length).toBe(1);
+  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     text: "unknown_mention",
   }));
 
-  expect(struct.message_store.data.add.length).toBe(0);
+  expect(message_store.data.add.length).toBe(0);
 
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 test("unknown event", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: true,
     type: "unknown-event",
+    deploy_error: null,
     text: "unknown",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(0);
-  expect(struct.message_store.data.add.length).toBe(0);
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(message_store.data.post.length).toBe(0);
+  expect(message_store.data.add.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 test("do not duplicate deploy", async () => {
-  const struct = init_struct({
+  const {struct, message_store, job_store} = init_struct({
     put: false,
     type: "app_mention",
+    deploy_error: null,
     text: "deploy elm",
   });
 
-  const action = await handler.detect_action(struct);
+  await handler.operate(struct);
 
-  await action.perform();
-
-  expect(struct.message_store.data.post.length).toBe(0);
-  expect(struct.message_store.data.add.length).toBe(0);
-  expect(struct.job_store.data.deploy.length).toBe(0);
+  expect(message_store.data.post.length).toBe(0);
+  expect(message_store.data.add.length).toBe(0);
+  expect(job_store.data.deploy.length).toBe(0);
 });
 
 const init_struct = ({put, type, deploy_error, text}) => {
@@ -191,21 +200,23 @@ const init_struct = ({put, type, deploy_error, text}) => {
     secret_store,
   });
 
+  const stream = stream_factory.init({
+    secret_store,
+    message_store,
+  });
+  const pipeline = pipeline_factory.init({
+    secret_store,
+    job_store,
+  });
+
   const i18n = i18n_factory.init();
 
-  const conversation = slack_bot_event.parse({
-    raw_event: {
-      type,
-      team: "TEAM",
-      channel: "CHANNEL",
-      ts: "TIMESTAMP",
-      text,
-    },
-    repository: {
-      session,
-      deployment,
-    },
-    i18n,
+  const conversation = conversation_factory.init({
+    type,
+    team: "TEAM",
+    channel: "CHANNEL",
+    timestamp: "TIMESTAMP",
+    text,
   });
 
   const repository = {
@@ -220,9 +231,25 @@ const init_struct = ({put, type, deploy_error, text}) => {
   };
 
   return {
-    conversation,
-    repository,
-    i18n,
+    struct: {
+      state: state.init({
+        conversation,
+        repository: {
+          deployment,
+          session,
+        },
+        words: i18n.conversation.words,
+      }),
+      action: action.init({
+        conversation,
+        repository: {
+          deployment,
+          stream,
+          pipeline,
+        },
+        action: i18n.action,
+      }),
+    },
     message_store,
     job_store,
   };

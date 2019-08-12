@@ -1,12 +1,8 @@
 const secret_store = require("../../lib/infra/secret_store");
 
 test("message_token", async () => {
-  const aws_secrets = init_aws_secrets({
+  const {store, aws_secrets} = init_secret_store({
     "slack-bot-token": "SLACK_BOT_TOKEN",
-  });
-
-  const store = secret_store.init({
-    aws_secrets,
   });
 
   const token = await store.message_token();
@@ -15,7 +11,7 @@ test("message_token", async () => {
 });
 
 test("job_tokens", async () => {
-  const aws_secrets = init_aws_secrets({
+  const {store, aws_secrets} = init_secret_store({
     "gitlab-trigger-tokens": JSON.stringify({
       "TEAM": {
         "CHANNEL": {
@@ -24,10 +20,6 @@ test("job_tokens", async () => {
         },
       },
     }),
-  });
-
-  const store = secret_store.init({
-    aws_secrets,
   });
 
   const tokens = await store.job_tokens({team: "TEAM", channel: "CHANNEL"});
@@ -41,6 +33,19 @@ test("job_tokens", async () => {
 
   expect(unknown_tokens).toBe(null);
 });
+
+const init_secret_store = (struct) => {
+  const aws_secrets = init_aws_secrets(struct);
+
+  const store = secret_store.init({
+    aws_secrets,
+  });
+
+  return {
+    store,
+    aws_secrets,
+  };
+};
 
 const init_aws_secrets = (struct) => {
   const getJSON = async () => {

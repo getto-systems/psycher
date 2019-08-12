@@ -3,24 +3,22 @@ const pipeline_factory = require("../lib/pipeline");
 const secret_store_factory = require("./infra/secret_store");
 const job_store_factory = require("./infra/job_store");
 
-test("trigger", async () => {
-  const job_store = job_store_factory.init({
-    deploy_error: null,
+test("deploy", async () => {
+  const {pipeline, job_store} = init_pipeline({
+    job_tokens: {
+      elm: {project_id: "PROJECT-ID", token: "TOKEN"},
+    },
   });
 
-  const pipeline = pipeline_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {project_id: "PROJECT-ID", token: "TOKEN"},
-      },
-    }),
-    job_store,
-  });
-
-  await pipeline.trigger({
-    team: "TEAM",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+  await pipeline.deploy({
+    job_signature: {
+      team: "TEAM",
+      channel: "CHANNEL",
+    },
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     target: "elm",
   });
 
@@ -28,30 +26,30 @@ test("trigger", async () => {
   expect(JSON.stringify(job_store.data.deploy[0])).toBe(JSON.stringify({
     project_id: "PROJECT-ID",
     token: "TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
   }));
 });
 
-test("trigger unknown target", async () => {
-  const job_store = job_store_factory.init({
-    deploy_error: null,
-  });
-
-  const pipeline = pipeline_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {project_id: "PROJECT-ID", token: "TOKEN"},
-      },
-    }),
-    job_store,
+test("deploy unknown target", async () => {
+  const {pipeline, job_store} = init_pipeline({
+    job_tokens: {
+      elm: {project_id: "PROJECT-ID", token: "TOKEN"},
+    },
   });
 
   try {
-    await pipeline.trigger({
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
+    await pipeline.deploy({
+      job_signature: {
+        team: "TEAM",
+        channel: "CHANNEL",
+      },
+      reply_to: {
+        channel: "CHANNEL",
+        timestamp: "TIMESTAMP",
+      },
       target: "unknown",
     });
 
@@ -61,25 +59,23 @@ test("trigger unknown target", async () => {
   }
 });
 
-test("trigger invalid project_id", async () => {
-  const job_store = job_store_factory.init({
-    deploy_error: null,
-  });
-
-  const pipeline = pipeline_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {project: "PROJECT-ID", token: "TOKEN"},
-      },
-    }),
-    job_store,
+test("deploy invalid project_id", async () => {
+  const {pipeline, job_store} = init_pipeline({
+    job_tokens: {
+      elm: {project: "PROJECT-ID", token: "TOKEN"},
+    },
   });
 
   try {
-    await pipeline.trigger({
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
+    await pipeline.deploy({
+      job_signature: {
+        team: "TEAM",
+        channel: "CHANNEL",
+      },
+      reply_to: {
+        channel: "CHANNEL",
+        timestamp: "TIMESTAMP",
+      },
       target: "elm",
     });
 
@@ -89,25 +85,23 @@ test("trigger invalid project_id", async () => {
   }
 });
 
-test("trigger invalid token", async () => {
-  const job_store = job_store_factory.init({
-    deploy_error: null,
-  });
-
-  const pipeline = pipeline_factory.init({
-    secret_store: secret_store_factory.init({
-      job_tokens: {
-        elm: {project_id: "PROJECT-ID", trigger_token: "TOKEN"},
-      },
-    }),
-    job_store,
+test("deploy invalid token", async () => {
+  const {pipeline, job_store} = init_pipeline({
+    job_tokens: {
+      elm: {project_id: "PROJECT-ID", trigger_token: "TOKEN"},
+    },
   });
 
   try {
-    await pipeline.trigger({
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
+    await pipeline.deploy({
+      job_signature: {
+        team: "TEAM",
+        channel: "CHANNEL",
+      },
+      reply_to: {
+        channel: "CHANNEL",
+        timestamp: "TIMESTAMP",
+      },
       target: "elm",
     });
 
@@ -116,3 +110,21 @@ test("trigger invalid token", async () => {
     expect(e).toBe("job token not found");
   }
 });
+
+const init_pipeline = ({job_tokens}) => {
+  const job_store = job_store_factory.init({
+    deploy_error: null,
+  });
+
+  const pipeline = pipeline_factory.init({
+    secret_store: secret_store_factory.init({
+      job_tokens,
+    }),
+    job_store,
+  });
+
+  return {
+    pipeline,
+    job_store,
+  };
+};

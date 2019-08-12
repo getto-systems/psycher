@@ -1,13 +1,13 @@
-const handler = require("./lib/handler");
 const slack_bot_event = require("./lib/slack_bot_event");
+const handler = require("./lib/handler");
+const state = require("./lib/handler/state");
+const action = require("./lib/handler/action");
 
 const repository = {
   stream: require("./lib/stream"),
   pipeline: require("./lib/pipeline"),
-  conversation: {
-    session: require("./lib/conversation/session"),
-    deployment: require("./lib/conversation/deployment"),
-  },
+  session: require("./lib/session"),
+  deployment: require("./lib/deployment"),
 };
 
 const infra = {
@@ -43,11 +43,11 @@ exports.handler = async (aws_lambda_event) => {
     };
   }
 
-  // there is no event on challenge-request
-  const raw_event = body.event;
-  if (raw_event) {
-    await handle_event(raw_event);
-  }
+  const conversation = slack_bot_event.parse(body);
+  if (conversation) {
+    // there is no conversation in challenge-request
+    await handle(conversation);
+  };
 
   // response to challenge-request
   return {
@@ -58,7 +58,7 @@ exports.handler = async (aws_lambda_event) => {
   };
 };
 
-const handle_event = async (raw_event) => {
+const handle = (conversation) => {
   const document_store = infra.document_store.init({
     aws_dynamodb: vendor.aws_dynamodb.init({
       region: process.env.REGION,
@@ -78,37 +78,43 @@ const handle_event = async (raw_event) => {
     gitlab_api: vendor.gitlab_api.init(),
   });
 
+  const deployment = repository.deployment.init({
+    document_store,
+  });
+  const session = repository.session.init({
+    secret_store,
+  });
+
+  const stream = repository.stream.init({
+    secret_store,
+    message_store,
+  });
+  const pipeline = repository.pipeline.init({
+    secret_store,
+    job_store,
+  });
+
   const i18n = i18n_factory.init("ja");
 
-  const conversation = slack_bot_event.parse({
-    raw_event,
-    repository: {
-      session: repository.conversation.session.init({
-        document_store,
-      }),
-      deployment: repository.conversation.deployment.init({
-        secret_store,
-      }),
-    },
-    i18n,
+  return handler.operate({
+    state: state.init({
+      conversation,
+      repository: {
+        deployment,
+        session,
+      },
+      words: i18n.conversation.words,
+    }),
+    action: action.init({
+      conversation,
+      repository: {
+        deployment,
+        stream,
+        pipeline,
+      },
+      action: i18n.action,
+    }),
   });
-
-  const action = await handler.detect_action({
-    conversation,
-    repository: {
-      stream: repository.stream.init({
-        secret_store,
-        message_store,
-      }),
-      pipeline: repository.pipeline.init({
-        secret_store,
-        job_store,
-      }),
-    },
-    i18n,
-  });
-
-  await action.perform();
 };
 
 const parse_json = (raw) => {
@@ -119,4 +125,5 @@ const parse_json = (raw) => {
       // ignore parse error
     }
   }
+  return null;
 };

@@ -4,24 +4,21 @@ const secret_store_factory = require("./infra/secret_store");
 const message_store_factory = require("./infra/message_store");
 
 test("post", async () => {
-  const message_store = message_store_factory.init();
-
-  const stream = stream_factory.init({
-    secret_store: secret_store_factory.init({
-      message_token: "MESSAGE-TOKEN",
-    }),
-    message_store,
-  });
+  const {stream, message_store} = init_stream();
 
   await stream.post({
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+    },
     text: "TEXT",
   });
 
   expect(message_store.data.post.length).toBe(1);
   expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
+    reply_to: {
+      channel: "CHANNEL",
+    },
     text: "TEXT",
   }));
 
@@ -29,18 +26,13 @@ test("post", async () => {
 });
 
 test("add", async () => {
-  const message_store = message_store_factory.init();
-
-  const stream = stream_factory.init({
-    secret_store: secret_store_factory.init({
-      message_token: "MESSAGE-TOKEN",
-    }),
-    message_store,
-  });
+  const {stream, message_store} = init_stream();
 
   await stream.add({
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     name: "NAME",
   });
 
@@ -49,8 +41,26 @@ test("add", async () => {
   expect(message_store.data.add.length).toBe(1);
   expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
     token: "MESSAGE-TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
+    reply_to: {
+      channel: "CHANNEL",
+      timestamp: "TIMESTAMP",
+    },
     name: "NAME",
   }));
 });
+
+const init_stream = () => {
+  const message_store = message_store_factory.init();
+
+  const stream = stream_factory.init({
+    secret_store: secret_store_factory.init({
+      message_token: "MESSAGE-TOKEN",
+    }),
+    message_store,
+  });
+
+  return {
+    stream,
+    message_store,
+  };
+};

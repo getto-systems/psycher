@@ -1,6 +1,6 @@
-const session_factory = require("../../lib/conversation/session");
+const session_factory = require("../lib/session");
 
-const document_store_factory = require("../infra/document_store");
+const document_store_factory = require("./infra/document_store");
 
 test("is_already_started returns true", async () => {
   const session = session_factory.init({
