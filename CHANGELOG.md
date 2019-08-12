@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.15.0
+
+refactor: handlers See merge request getto-psycher/slack!54
+
+
 ## Version : 1.14.1
 
 
