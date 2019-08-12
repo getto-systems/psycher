@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 1.12.1
+
+
+
 ## Version : 1.12.0
 
 fix: init repository See merge request getto-psycher/slack!51
