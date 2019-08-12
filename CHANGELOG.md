@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 1.8.0
+
+refactor: model names See merge request getto-psycher/slack!46
+fix: releaseignore See merge request getto-psycher/slack!45
+
+
 ## Version : 1.7.4
 
 fix: gitlab-ci See merge request getto-psycher/slack!44
