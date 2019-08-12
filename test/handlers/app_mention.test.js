@@ -146,21 +146,6 @@ test("unknown mention", async () => {
   expect(job_store.data.deploy.length).toBe(0);
 });
 
-test("unknown event", async () => {
-  const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "unknown-event",
-    deploy_error: null,
-    text: "unknown",
-  });
-
-  await handler.operate(struct);
-
-  expect(message_store.data.post.length).toBe(0);
-  expect(message_store.data.add.length).toBe(0);
-  expect(job_store.data.deploy.length).toBe(0);
-});
-
 test("do not duplicate deploy", async () => {
   const {struct, message_store, job_store} = init_struct({
     put: false,
