@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 1.10.0
+
+add: vendor dependencies See merge request getto-psycher/slack!49
+fix: npm clean-install See merge request getto-psycher/slack!48
+
+
 ## Version : 1.9.1
 
 
