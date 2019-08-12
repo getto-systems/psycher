@@ -16,7 +16,7 @@ test:
   image: node:10.16.0-stretch
 
   before_script:
-    - npm install
+    - npm clean-install
   script:
     - npm test
 
@@ -36,7 +36,7 @@ build:
 
   before_script:
     - rm -rf node_modules
-    - npm install
+    - npm clean-install
   script:
     - npm test
 
