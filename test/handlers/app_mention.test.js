@@ -2,6 +2,7 @@ const handler = require("../../lib/handlers/app_mention");
 
 const conversation_factory = require("../../lib/conversation");
 const progress = require("../../lib/conversation/progress");
+const reply = require("../../lib/conversation/reply");
 
 const session_factory = require("../../lib/session");
 const deployment_factory = require("../../lib/deployment");
@@ -244,6 +245,9 @@ const init_factory = (repository) => {
   return {
     progress: progress.init({
       session: repository.session,
+    }),
+    reply: reply.init({
+      stream: repository.stream,
     }),
   };
 };

@@ -1,6 +1,8 @@
 const slack_bot_event = require("./lib/slack_bot_event");
+
 const conversation_factory = require("./lib/conversation");
 const progress = require("./lib/conversation/progress");
+const reply = require("./lib/conversation/reply");
 
 const handler = require("./lib/handler");
 
@@ -126,6 +128,9 @@ const init_factory = (repository) => {
   return {
     progress: progress.init({
       session: repository.session,
+    }),
+    reply: reply.init({
+      stream: repository.stream,
     }),
   };
 };
