@@ -63,11 +63,9 @@ exports.handler = async (aws_lambda_event) => {
 };
 
 const handle = (event_info) => {
-  const repository = init_repository();
-  const factory = init_factory(repository);
+  const factory = init_factory();
   const conversation = conversation_factory.init({
     event_info,
-    repository,
     factory,
   });
   const i18n = i18n_factory.init("ja");
@@ -80,7 +78,7 @@ const handle = (event_info) => {
   });
 };
 
-const init_repository = () => {
+const init_factory = () => {
   const document_store = infra.document_store.init({
     aws_dynamodb: vendor.aws_dynamodb.init({
       region: process.env.REGION,
@@ -117,20 +115,15 @@ const init_repository = () => {
   });
 
   return {
-    session,
-    deployment,
-    stream,
-    pipeline,
-  };
-};
-
-const init_factory = (repository) => {
-  return {
     progress: progress.init({
-      session: repository.session,
+      session,
     }),
     reply: reply.init({
-      stream: repository.stream,
+      stream,
+    }),
+    job: job.init({
+      deployment,
+      pipeline,
     }),
   };
 };

@@ -10,7 +10,7 @@ test("message_token", async () => {
   expect(token).toBe("SLACK_BOT_TOKEN");
 });
 
-test("job_tokens", async () => {
+test("job_targets", async () => {
   const {store, aws_secrets} = init_secret_store({
     "gitlab-trigger-tokens": JSON.stringify({
       "TEAM": {
@@ -22,16 +22,69 @@ test("job_tokens", async () => {
     }),
   });
 
-  const tokens = await store.job_tokens({team: "TEAM", channel: "CHANNEL"});
+  const targets = await store.job_targets({team: "TEAM", channel: "CHANNEL"});
+  expect(targets).toEqual(["elm", "rails"]);
 
-  expect(JSON.stringify(tokens)).toBe(JSON.stringify({
-    elm: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
-    rails: {project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"},
-  }));
+  const unknown_targets = await store.job_targets({team: "UNKNOWN", channel: "CHANNEL"});
+  expect(unknown_targets).toEqual([]);
+});
 
-  const unknown_tokens = await store.job_tokens({team: "UNKNOWN", channel: "CHANNEL"});
+test("job_token", async () => {
+  const {store, aws_secrets} = init_secret_store({
+    "gitlab-trigger-tokens": JSON.stringify({
+      "TEAM": {
+        "CHANNEL": {
+          elm: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
+          rails: {project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"},
+          no_project_id: {project: "INVALID", token: "TOKEN"},
+          no_token: {project_id: "INVALID", trigger_token: "TOKEN"},
+        },
+      },
+    }),
+  });
 
-  expect(unknown_tokens).toBe(null);
+  const job_signature = {
+    team: "TEAM",
+    channel: "CHANNEL",
+  };
+
+  const elm_token = await store.job_token({job_signature, target: "elm"});
+  expect(elm_token).toEqual({project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"});
+
+  const rails_token = await store.job_token({job_signature, target: "rails"});
+  expect(rails_token).toEqual({project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"});
+
+  const no_project_id_token = await store.job_token({job_signature, target: "no_project_id"});
+  expect(no_project_id_token).toBe(null);
+
+  const no_token_token = await store.job_token({job_signature, target: "no_token"});
+  expect(no_token_token).toBe(null);
+
+  const unknown_target = await store.job_token({job_signature, target: "unknown"});
+  expect(unknown_target).toBe(null);
+});
+
+test("job_token with unknown team", async () => {
+  const {store, aws_secrets} = init_secret_store({
+    "gitlab-trigger-tokens": JSON.stringify({
+      "TEAM": {
+        "CHANNEL": {
+          elm: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
+          rails: {project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"},
+          no_project_id: {project: "INVALID", token: "TOKEN"},
+          no_token: {project_id: "INVALID", trigger_token: "TOKEN"},
+        },
+      },
+    }),
+  });
+
+  const job_signature = {
+    team: "unknown",
+    channel: "CHANNEL",
+  };
+
+  const elm_token = await store.job_token({job_signature, target: "elm"});
+  expect(elm_token).toBe(null);
 });
 
 const init_secret_store = (struct) => {

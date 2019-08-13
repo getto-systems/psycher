@@ -4,8 +4,10 @@ test("trigger", async () => {
   const {store, gitlab_api} = init_job_store();
 
   await store.deploy({
-    project_id: "PROJECT-ID",
-    token: "TOKEN",
+    job_token: {
+      project_id: "PROJECT-ID",
+      token: "TOKEN",
+    },
     reply_to: {
       channel: "CHANNEL",
       timestamp: "TIMESTAMP",
