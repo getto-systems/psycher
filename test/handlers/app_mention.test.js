@@ -1,6 +1,7 @@
 const handler = require("../../lib/handlers/app_mention");
 
 const conversation_factory = require("../../lib/conversation");
+const progress = require("../../lib/conversation/progress");
 
 const session_factory = require("../../lib/session");
 const deployment_factory = require("../../lib/deployment");
@@ -17,9 +18,9 @@ const i18n_factory = require("../i18n");
 
 test("deploy elm", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "app_mention",
+    put_error: null,
     deploy_error: null,
+    type: "app_mention",
     text: "deploy elm",
   });
 
@@ -49,9 +50,9 @@ test("deploy elm", async () => {
 
 test("deploy error", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "app_mention",
+    put_error: null,
     deploy_error: "deploy-error",
+    type: "app_mention",
     text: "deploy elm",
   });
 
@@ -73,9 +74,9 @@ test("deploy error", async () => {
 
 test("deploy target not found", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "app_mention",
+    put_error: null,
     deploy_error: null,
+    type: "app_mention",
     text: "deploy unknown",
   });
 
@@ -98,9 +99,9 @@ test("deploy target not found", async () => {
 
 test("greeting", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "app_mention",
+    put_error: null,
     deploy_error: null,
+    type: "app_mention",
     text: "hello",
   });
 
@@ -123,9 +124,9 @@ test("greeting", async () => {
 
 test("unknown mention", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: true,
-    type: "app_mention",
+    put_error: null,
     deploy_error: null,
+    type: "app_mention",
     text: "unknown",
   });
 
@@ -148,9 +149,9 @@ test("unknown mention", async () => {
 
 test("do not duplicate deploy", async () => {
   const {struct, message_store, job_store} = init_struct({
-    put: false,
-    type: "app_mention",
+    put_error: "put error",
     deploy_error: null,
+    type: "app_mention",
     text: "deploy elm",
   });
 
@@ -161,9 +162,9 @@ test("do not duplicate deploy", async () => {
   expect(job_store.data.deploy.length).toBe(0);
 });
 
-const init_struct = ({put, type, deploy_error, text}) => {
-  const {repository, message_store, job_store} = init_repository({
-    put,
+const init_struct = ({put_error, type, deploy_error, text}) => {
+  const {repository, factory, message_store, job_store} = init_repository({
+    put_error,
     deploy_error,
   });
 
@@ -176,6 +177,7 @@ const init_struct = ({put, type, deploy_error, text}) => {
       text,
     },
     repository,
+    factory,
   });
 
   const i18n = i18n_factory.init();
@@ -190,7 +192,7 @@ const init_struct = ({put, type, deploy_error, text}) => {
   };
 };
 
-const init_repository = ({put, deploy_error}) => {
+const init_repository = ({put_error, deploy_error}) => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
     job_tokens: {
@@ -205,7 +207,7 @@ const init_repository = ({put, deploy_error}) => {
 
   const session = session_factory.init({
     document_store: document_store_factory.init({
-      put,
+      put_error,
     }),
   });
   const deployment = deployment_factory.init({
@@ -221,14 +223,27 @@ const init_repository = ({put, deploy_error}) => {
     job_store,
   });
 
+  const repository = {
+    session,
+    deployment,
+    stream,
+    pipeline,
+  };
+
+  const factory = init_factory(repository);
+
   return {
-    repository: {
-      session,
-      deployment,
-      stream,
-      pipeline,
-    },
+    repository,
+    factory,
     message_store,
     job_store,
+  };
+};
+
+const init_factory = (repository) => {
+  return {
+    progress: progress.init({
+      session: repository.session,
+    }),
   };
 };
