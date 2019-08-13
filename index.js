@@ -1,5 +1,6 @@
 const slack_bot_event = require("./lib/slack_bot_event");
 const conversation_factory = require("./lib/conversation");
+const progress = require("./lib/conversation/progress");
 
 const handler = require("./lib/handler");
 
@@ -60,9 +61,12 @@ exports.handler = async (aws_lambda_event) => {
 };
 
 const handle = (event_info) => {
+  const repository = init_repository();
+  const factory = init_factory(repository);
   const conversation = conversation_factory.init({
     event_info,
-    repository: init_repository(),
+    repository,
+    factory,
   });
   const i18n = i18n_factory.init("ja");
 
@@ -115,6 +119,14 @@ const init_repository = () => {
     deployment,
     stream,
     pipeline,
+  };
+};
+
+const init_factory = (repository) => {
+  return {
+    progress: progress.init({
+      session: repository.session,
+    }),
   };
 };
 
