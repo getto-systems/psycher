@@ -3,6 +3,7 @@ const handler = require("../../lib/handlers/app_mention");
 const conversation_factory = require("../../lib/conversation");
 const progress = require("../../lib/conversation/progress");
 const reply = require("../../lib/conversation/reply");
+const job = require("../../lib/conversation/job");
 
 const session_factory = require("../../lib/session");
 const deployment_factory = require("../../lib/deployment");
@@ -40,8 +41,10 @@ test("deploy elm", async () => {
 
   expect(job_store.data.deploy.length).toBe(1);
   expect(JSON.stringify(job_store.data.deploy[0])).toBe(JSON.stringify({
-    project_id: "ELM-PROJECT-ID",
-    token: "ELM-TOKEN",
+    job_token: {
+      project_id: "ELM-PROJECT-ID",
+      token: "ELM-TOKEN",
+    },
     reply_to: {
       channel: "CHANNEL",
       timestamp: "TIMESTAMP",
@@ -164,7 +167,7 @@ test("do not duplicate deploy", async () => {
 });
 
 const init_struct = ({put_error, type, deploy_error, text}) => {
-  const {repository, factory, message_store, job_store} = init_repository({
+  const {factory, message_store, job_store} = init_factory({
     put_error,
     deploy_error,
   });
@@ -177,7 +180,6 @@ const init_struct = ({put_error, type, deploy_error, text}) => {
       timestamp: "TIMESTAMP",
       text,
     },
-    repository,
     factory,
   });
 
@@ -193,13 +195,11 @@ const init_struct = ({put_error, type, deploy_error, text}) => {
   };
 };
 
-const init_repository = ({put_error, deploy_error}) => {
+const init_factory = ({put_error, deploy_error}) => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
-    job_tokens: {
-      elm: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
-      rails: {project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"},
-    },
+    job_targets: ["elm", "rails"],
+    job_token: {project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"},
   });
   const message_store = message_store_factory.init();
   const job_store = job_store_factory.init({
@@ -231,23 +231,22 @@ const init_repository = ({put_error, deploy_error}) => {
     pipeline,
   };
 
-  const factory = init_factory(repository);
-
-  return {
-    repository,
-    factory,
-    message_store,
-    job_store,
-  };
-};
-
-const init_factory = (repository) => {
-  return {
+  const factory = {
     progress: progress.init({
       session: repository.session,
     }),
     reply: reply.init({
       stream: repository.stream,
     }),
+    job: job.init({
+      deployment: repository.deployment,
+      pipeline: repository.pipeline,
+    }),
+  };
+
+  return {
+    factory,
+    message_store,
+    job_store,
   };
 };
