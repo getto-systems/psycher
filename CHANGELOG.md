@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.18.0
+
+fix: load modules See merge request getto-psycher/slack!60
+
+
 ## Version : 1.17.0
 
 refactor: handler See merge request getto-psycher/slack!59
