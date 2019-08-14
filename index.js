@@ -62,7 +62,7 @@ exports.handler = async (aws_lambda_event) => {
   };
 };
 
-const handle = async (event_info) => {
+const handle = (event_info) => {
   const factory = init_factory();
   const conversation = conversation_factory.init({
     event_info,
