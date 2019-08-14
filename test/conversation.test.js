@@ -29,9 +29,10 @@ test("init conversation", async () => {
   });
 
   expect(conversation.includes("deploy")).toBe(true);
+  expect(conversation.includes_some(["deploy"])).toBe(true);
 
   expect(await conversation.is_already_started()).toBe(false);
-  expect(await conversation.has_deploy_target()).toBe(true);
+  expect(await conversation.has_no_deploy_target()).toBe(false);
 });
 
 test("nothing effect on double is_already_started check", async () => {

@@ -6,19 +6,19 @@ test("check i18n struct", async () => {
     const i18n = i18n_factory.init(lang);
 
     const handler_tests = {
-      app_mention: (target) => {
-        expect(!!target.action.deploy.success).toBe(true);
-        expect(!!target.action.deploy.failure).toBe(true);
-        expect(!!target.action.deploy_target_not_found.messages).toBe(true);
-        expect(!!target.action.greeting.messages).toBe(true);
-        expect(!!target.action.unknown_mention.messages).toBe(true);
-        expect(!!target.conversation.words.deploy).toBe(true);
-        expect(!!target.conversation.words.greeting).toBe(true);
+      mention: (target) => {
+        expect(!!target.deploy.words).toBe(true);
+        expect(!!target.deploy.success).toBe(true);
+        expect(!!target.deploy.failure).toBe(true);
+        expect(!!target.deploy_target_not_found.messages).toBe(true);
+        expect(!!target.greeting.words).toBe(true);
+        expect(!!target.greeting.messages).toBe(true);
+        expect(!!target.unknown_mention.messages).toBe(true);
       },
     };
 
-    handler_factory.handlers().forEach((type) => {
-      handler_tests[type](i18n[type]);
+    handler_factory.handler_names().forEach((name) => {
+      handler_tests[name](i18n[name]);
     });
   });
 });

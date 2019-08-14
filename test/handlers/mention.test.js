@@ -1,4 +1,4 @@
-const handler = require("../../lib/handlers/app_mention");
+const handler = require("../../lib/handlers/mention");
 
 const conversation_factory = require("../../lib/conversation");
 const progress = require("../../lib/conversation/progress");
@@ -19,14 +19,14 @@ const job_store_factory = require("../infra/job_store");
 const i18n_factory = require("../i18n");
 
 test("deploy elm", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: null,
     deploy_error: null,
     type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(0);
   expect(message_store.data.add.length).toBe(1);
@@ -53,14 +53,14 @@ test("deploy elm", async () => {
 });
 
 test("deploy error", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: null,
     deploy_error: "deploy-error",
     type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(0);
   expect(message_store.data.add.length).toBe(1);
@@ -77,14 +77,14 @@ test("deploy error", async () => {
 });
 
 test("deploy target not found", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: null,
     deploy_error: null,
     type: "app_mention",
     text: "deploy unknown",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(1);
   expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
@@ -102,14 +102,14 @@ test("deploy target not found", async () => {
 });
 
 test("greeting", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: null,
     deploy_error: null,
     type: "app_mention",
     text: "hello",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(1);
   expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
@@ -127,14 +127,14 @@ test("greeting", async () => {
 });
 
 test("unknown mention", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: null,
     deploy_error: null,
     type: "app_mention",
     text: "unknown",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(1);
   expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
@@ -152,21 +152,21 @@ test("unknown mention", async () => {
 });
 
 test("do not duplicate deploy", async () => {
-  const {struct, message_store, job_store} = init_struct({
+  const {conversation, i18n, message_store, job_store} = init_conversation({
     put_error: "put error",
     deploy_error: null,
     type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.operate(struct);
+  await handler.init(i18n).operate(conversation);
 
   expect(message_store.data.post.length).toBe(0);
   expect(message_store.data.add.length).toBe(0);
   expect(job_store.data.deploy.length).toBe(0);
 });
 
-const init_struct = ({put_error, type, deploy_error, text}) => {
+const init_conversation = ({put_error, type, deploy_error, text}) => {
   const {factory, message_store, job_store} = init_factory({
     put_error,
     deploy_error,
@@ -186,10 +186,8 @@ const init_struct = ({put_error, type, deploy_error, text}) => {
   const i18n = i18n_factory.init();
 
   return {
-    struct: {
-      conversation,
-      i18n: i18n.app_mention,
-    },
+    conversation,
+    i18n: i18n.mention,
     message_store,
     job_store,
   };

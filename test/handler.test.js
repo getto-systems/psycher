@@ -1,14 +1,16 @@
-const handler_factory = require("../lib/handler");
+const handler = require("../lib/handler");
+
+const i18n = require("./i18n");
 
 test("init event type handler", async () => {
-  handler_factory.handlers().forEach((type) => {
-    handler_factory.init(type);
+  handler.event_types().forEach((type) => {
+    handler.init({type, i18n: i18n.init()});
   });
 });
 
 test("unknown type", async () => {
   try {
-    handler_factory.init("unknown");
+    handler.init({type: "unknown"});
 
     throw "unknown handler error not throwed";
   } catch (e) {
