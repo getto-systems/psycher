@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.21.0
+
+fix: await target response See merge request getto-psycher/slack!63
+
+
 ## Version : 1.20.0
 
 fix: pipeline signature See merge request getto-psycher/slack!62
