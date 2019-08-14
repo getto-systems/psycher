@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.20.0
+
+fix: pipeline signature See merge request getto-psycher/slack!62
+
+
 ## Version : 1.19.0
 
 fix: reference See merge request getto-psycher/slack!61
