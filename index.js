@@ -1,3 +1,5 @@
+"use strict";
+
 const slack_bot_event = require("./lib/slack_bot_event");
 const conversation_factory = require("./lib/conversation");
 const handler = require("./lib/handler");
@@ -62,7 +64,7 @@ const handle = (event_info) => {
   const repository = init_repository();
   const conversation = conversation_factory.init({
     event_info,
-    factory,
+    repository,
   });
   const i18n = i18n_factory.init("ja");
 
