@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version : 1.17.0
+
+refactor: handler See merge request getto-psycher/slack!59
+refactor: job See merge request getto-psycher/slack!58
+refactor: reply See merge request getto-psycher/slack!57
+refactor: progress See merge request getto-psycher/slack!56
+
+
 ## Version : 1.16.1
 
 
