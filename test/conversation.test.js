@@ -1,7 +1,4 @@
 const conversation_factory = require("../lib/conversation");
-const progress = require("../lib/conversation/progress");
-const reply = require("../lib/conversation/reply");
-const job = require("../lib/conversation/job");
 
 const session_factory = require("../lib/session");
 const deployment_factory = require("../lib/deployment");
@@ -15,7 +12,7 @@ const message_store_factory = require("./infra/message_store");
 const job_store_factory = require("./infra/job_store");
 
 test("init conversation", async () => {
-  const {factory, message_store, job_store} = init_factory();
+  const {repository, message_store, job_store} = init_repository();
 
   const conversation = conversation_factory.init({
     event_info: {
@@ -25,7 +22,7 @@ test("init conversation", async () => {
       timestamp: "TIMESTAMP",
       text: "deploy elm",
     },
-    factory,
+    repository,
   });
 
   expect(conversation.includes("deploy")).toBe(true);
@@ -36,7 +33,7 @@ test("init conversation", async () => {
 });
 
 test("nothing effect on double is_already_started check", async () => {
-  const {factory, message_store, job_store} = init_factory();
+  const {repository, message_store, job_store} = init_repository();
 
   const conversation = conversation_factory.init({
     event_info: {
@@ -46,7 +43,7 @@ test("nothing effect on double is_already_started check", async () => {
       timestamp: "TIMESTAMP",
       text: "deploy elm",
     },
-    factory,
+    repository,
   });
 
   expect(await conversation.is_already_started()).toBe(false);
@@ -54,7 +51,7 @@ test("nothing effect on double is_already_started check", async () => {
 });
 
 test("reply message", async () => {
-  const {factory, message_store, job_store} = init_factory();
+  const {repository, message_store, job_store} = init_repository();
 
   const conversation = conversation_factory.init({
     event_info: {
@@ -64,7 +61,7 @@ test("reply message", async () => {
       timestamp: "TIMESTAMP",
       text: "deploy elm",
     },
-    factory,
+    repository,
   });
 
   await conversation.reply(["message"]);
@@ -84,7 +81,7 @@ test("reply message", async () => {
 });
 
 test("add reaction", async () => {
-  const {factory, message_store, job_store} = init_factory();
+  const {repository, message_store, job_store} = init_repository();
 
   const conversation = conversation_factory.init({
     event_info: {
@@ -94,7 +91,7 @@ test("add reaction", async () => {
       timestamp: "TIMESTAMP",
       text: "deploy elm",
     },
-    factory,
+    repository,
   });
 
   await conversation.reaction("reaction");
@@ -114,7 +111,7 @@ test("add reaction", async () => {
 });
 
 test("trigger deploy job", async () => {
-  const {factory, message_store, job_store} = init_factory();
+  const {repository, message_store, job_store} = init_repository();
 
   const conversation = conversation_factory.init({
     event_info: {
@@ -124,7 +121,7 @@ test("trigger deploy job", async () => {
       timestamp: "TIMESTAMP",
       text: "deploy elm",
     },
-    factory,
+    repository,
   });
 
   await conversation.trigger_deploy_job();
@@ -145,7 +142,7 @@ test("trigger deploy job", async () => {
   expect(message_store.data.add.length).toBe(0);
 });
 
-const init_factory = () => {
+const init_repository = () => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
     job_targets: ["elm"],
@@ -181,21 +178,8 @@ const init_factory = () => {
     pipeline,
   };
 
-  const factory = {
-    progress: progress.init({
-      session: repository.session,
-    }),
-    reply: reply.init({
-      stream: repository.stream,
-    }),
-    job: job.init({
-      deployment: repository.deployment,
-      pipeline: repository.pipeline,
-    }),
-  };
-
   return {
-    factory,
+    repository,
     message_store,
     job_store,
   };
