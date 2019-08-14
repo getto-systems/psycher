@@ -29,6 +29,7 @@ test("init conversation", async () => {
   });
 
   expect(conversation.includes("deploy")).toBe(true);
+  expect(conversation.includes_some(["deploy"])).toBe(true);
 
   expect(await conversation.is_already_started()).toBe(false);
   expect(await conversation.has_deploy_target()).toBe(true);

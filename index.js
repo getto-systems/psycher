@@ -62,7 +62,7 @@ exports.handler = async (aws_lambda_event) => {
   };
 };
 
-const handle = (event_info) => {
+const handle = async (event_info) => {
   const factory = init_factory();
   const conversation = conversation_factory.init({
     event_info,
@@ -70,12 +70,7 @@ const handle = (event_info) => {
   });
   const i18n = i18n_factory.init("ja");
 
-  const event_type = event_info.type;
-
-  return handler.init(event_type).operate({
-    conversation,
-    i18n: i18n[event_type],
-  });
+  return handler.init({type: event_info.type, i18n}).operate(conversation);
 };
 
 const init_factory = () => {
