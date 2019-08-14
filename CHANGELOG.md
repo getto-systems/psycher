@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.19.0
+
+fix: reference See merge request getto-psycher/slack!61
+
+
 ## Version : 1.18.0
 
 fix: load modules See merge request getto-psycher/slack!60
