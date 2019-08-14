@@ -3,6 +3,7 @@ const slack_bot_event = require("./lib/slack_bot_event");
 const conversation_factory = require("./lib/conversation");
 const progress = require("./lib/conversation/progress");
 const reply = require("./lib/conversation/reply");
+const job = require("./lib/conversation/job");
 
 const handler = require("./lib/handler");
 
