@@ -1,9 +1,5 @@
 const slack_bot_event = require("./lib/slack_bot_event");
-
 const conversation_factory = require("./lib/conversation");
-const progress = require("./lib/conversation/progress");
-const reply = require("./lib/conversation/reply");
-
 const handler = require("./lib/handler");
 
 const repository = {
@@ -63,7 +59,7 @@ exports.handler = async (aws_lambda_event) => {
 };
 
 const handle = (event_info) => {
-  const factory = init_factory();
+  const repository = init_repository();
   const conversation = conversation_factory.init({
     event_info,
     factory,
@@ -73,7 +69,7 @@ const handle = (event_info) => {
   return handler.init({type: event_info.type, i18n}).operate(conversation);
 };
 
-const init_factory = () => {
+const init_repository = () => {
   const document_store = infra.document_store.init({
     aws_dynamodb: vendor.aws_dynamodb.init({
       region: process.env.REGION,
@@ -110,16 +106,10 @@ const init_factory = () => {
   });
 
   return {
-    progress: progress.init({
-      session,
-    }),
-    reply: reply.init({
-      stream,
-    }),
-    job: job.init({
-      deployment,
-      pipeline,
-    }),
+    session,
+    stream,
+    deployment,
+    pipeline,
   };
 };
 

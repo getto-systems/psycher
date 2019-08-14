@@ -1,9 +1,6 @@
 const handler = require("../../lib/handlers/mention");
 
 const conversation_factory = require("../../lib/conversation");
-const progress = require("../../lib/conversation/progress");
-const reply = require("../../lib/conversation/reply");
-const job = require("../../lib/conversation/job");
 
 const session_factory = require("../../lib/session");
 const deployment_factory = require("../../lib/deployment");
@@ -167,7 +164,7 @@ test("do not duplicate deploy", async () => {
 });
 
 const init_conversation = ({put_error, type, deploy_error, text}) => {
-  const {factory, message_store, job_store} = init_factory({
+  const {repository, message_store, job_store} = init_repository({
     put_error,
     deploy_error,
   });
@@ -180,7 +177,7 @@ const init_conversation = ({put_error, type, deploy_error, text}) => {
       timestamp: "TIMESTAMP",
       text,
     },
-    factory,
+    repository,
   });
 
   const i18n = i18n_factory.init();
@@ -193,7 +190,7 @@ const init_conversation = ({put_error, type, deploy_error, text}) => {
   };
 };
 
-const init_factory = ({put_error, deploy_error}) => {
+const init_repository = ({put_error, deploy_error}) => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
     job_targets: ["elm", "rails"],
@@ -229,21 +226,8 @@ const init_factory = ({put_error, deploy_error}) => {
     pipeline,
   };
 
-  const factory = {
-    progress: progress.init({
-      session: repository.session,
-    }),
-    reply: reply.init({
-      stream: repository.stream,
-    }),
-    job: job.init({
-      deployment: repository.deployment,
-      pipeline: repository.pipeline,
-    }),
-  };
-
   return {
-    factory,
+    repository,
     message_store,
     job_store,
   };
