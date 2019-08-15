@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 1.23.0
+
+fix: test See merge request getto-psycher/slack!67
+refactor: conversation See merge request getto-psycher/slack!66
+
+
 ## Version : 1.22.2
 
 
