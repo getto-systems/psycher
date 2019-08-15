@@ -26,28 +26,33 @@ test("deploy elm", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(0);
-  expect(message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    name: "success",
-  }));
-
-  expect(job_store.data.deploy.length).toBe(1);
-  expect(JSON.stringify(job_store.data.deploy[0])).toBe(JSON.stringify({
-    job_token: {
-      project_id: "ELM-PROJECT-ID",
-      token: "ELM-TOKEN",
-    },
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-  }));
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        name: "success",
+      },
+    ],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [
+      {
+        job_token: {
+          project_id: "ELM-PROJECT-ID",
+          token: "ELM-TOKEN",
+        },
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+      },
+    ],
+  });
 });
 
 test("deploy error", async () => {
@@ -60,18 +65,22 @@ test("deploy error", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(0);
-  expect(message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    name: "failure",
-  }));
-
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        name: "failure",
+      },
+    ],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("deploy target not found", async () => {
@@ -84,19 +93,22 @@ test("deploy target not found", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    text: "deploy_target_not_found",
-  }));
-
-  expect(message_store.data.add.length).toBe(0);
-
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        text: "deploy_target_not_found",
+      },
+    ],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("greeting", async () => {
@@ -109,19 +121,22 @@ test("greeting", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    text: "greeting",
-  }));
-
-  expect(message_store.data.add.length).toBe(0);
-
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        text: "greeting",
+      },
+    ],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("unknown mention", async () => {
@@ -134,19 +149,22 @@ test("unknown mention", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    text: "unknown_mention",
-  }));
-
-  expect(message_store.data.add.length).toBe(0);
-
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        text: "unknown_mention",
+      },
+    ],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("do not duplicate deploy", async () => {
@@ -159,9 +177,13 @@ test("do not duplicate deploy", async () => {
 
   await handler.init(i18n).operate(conversation);
 
-  expect(message_store.data.post.length).toBe(0);
-  expect(message_store.data.add.length).toBe(0);
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 const init_conversation = ({started_conversations_exists, type, deploy_error, text}) => {

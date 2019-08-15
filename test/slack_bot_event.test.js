@@ -11,13 +11,13 @@ test("init event_info", async () => {
     },
   });
 
-  expect(JSON.stringify(event_info)).toBe(JSON.stringify({
+  expect(event_info).toEqual({
     type: "app_mention",
     team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
     text: "deploy elm",
-  }));
+  });
 });
 
 test("empty type", async () => {

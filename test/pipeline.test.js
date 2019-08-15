@@ -20,16 +20,19 @@ test("deploy", async () => {
     target: "elm",
   });
 
-  expect(job_store.data.deploy.length).toBe(1);
-  expect(job_store.data.deploy[0]).toEqual({
-    job_token: {
-      project_id: "PROJECT-ID",
-      token: "TOKEN",
-    },
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
+  expect(job_store.data).toEqual({
+    deploy: [
+      {
+        job_token: {
+          project_id: "PROJECT-ID",
+          token: "TOKEN",
+        },
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+      },
+    ],
   });
 });
 

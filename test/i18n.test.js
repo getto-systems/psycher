@@ -7,13 +7,13 @@ test("check i18n struct", async () => {
 
     const handler_tests = {
       mention: (target) => {
-        expect(!!target.deploy.words).toBe(true);
-        expect(!!target.deploy.success).toBe(true);
-        expect(!!target.deploy.failure).toBe(true);
-        expect(!!target.deploy_target_not_found.messages).toBe(true);
-        expect(!!target.greeting.words).toBe(true);
-        expect(!!target.greeting.messages).toBe(true);
-        expect(!!target.unknown_mention.messages).toBe(true);
+        expect(target.deploy.words).toBeTruthy();
+        expect(target.deploy.success).toBeTruthy();
+        expect(target.deploy.failure).toBeTruthy();
+        expect(target.deploy_target_not_found.messages).toBeTruthy();
+        expect(target.greeting.words).toBeTruthy();
+        expect(target.greeting.messages).toBeTruthy();
+        expect(target.unknown_mention.messages).toBeTruthy();
       },
     };
 
@@ -24,11 +24,7 @@ test("check i18n struct", async () => {
 });
 
 test("unknown language", async () => {
-  try {
+  expect(() => {
     i18n_factory.init("unknown");
-
-    throw "unknown language error not throwed";
-  } catch (e) {
-    expect(e).toBe("unknown language: unknown");
-  }
+  }).toThrow("unknown language: unknown");
 });

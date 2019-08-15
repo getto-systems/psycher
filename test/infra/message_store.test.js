@@ -11,12 +11,20 @@ test("post", async () => {
     text: "TEXT",
   });
 
-  expect(slack_api.data.chat.postMessage.length).toBe(1);
-  expect(JSON.stringify(slack_api.data.chat.postMessage[0])).toBe(JSON.stringify({
-    token: "TOKEN",
-    channel: "CHANNEL",
-    text: "TEXT",
-  }));
+  expect(slack_api.data).toEqual({
+    chat: {
+      postMessage: [
+        {
+          token: "TOKEN",
+          channel: "CHANNEL",
+          text: "TEXT",
+        },
+      ],
+    },
+    reactions: {
+      add: [],
+    },
+  });
 });
 
 test("add", async () => {
@@ -31,13 +39,21 @@ test("add", async () => {
     name: "NAME",
   });
 
-  expect(slack_api.data.reactions.add.length).toBe(1);
-  expect(JSON.stringify(slack_api.data.reactions.add[0])).toBe(JSON.stringify({
-    token: "TOKEN",
-    channel: "CHANNEL",
-    timestamp: "TIMESTAMP",
-    name: "NAME",
-  }));
+  expect(slack_api.data).toEqual({
+    chat: {
+      postMessage: [],
+    },
+    reactions: {
+      add: [
+        {
+          token: "TOKEN",
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+          name: "NAME",
+        },
+      ],
+    },
+  });
 });
 
 const init_message_store = () => {

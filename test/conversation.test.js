@@ -67,18 +67,22 @@ test("reply message", async () => {
 
   await conversation.reply(["message"]);
 
-  expect(message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    text: "message",
-  }));
-
-  expect(message_store.data.add.length).toBe(0);
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        text: "message",
+      },
+    ],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("add reaction", async () => {
@@ -97,18 +101,22 @@ test("add reaction", async () => {
 
   await conversation.reaction("reaction");
 
-  expect(message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    name: "reaction",
-  }));
-
-  expect(message_store.data.post.length).toBe(0);
-  expect(job_store.data.deploy.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        name: "reaction",
+      },
+    ],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [],
+  });
 });
 
 test("trigger deploy job", async () => {
@@ -127,20 +135,24 @@ test("trigger deploy job", async () => {
 
   await conversation.trigger_deploy_job();
 
-  expect(job_store.data.deploy.length).toBe(1);
-  expect(JSON.stringify(job_store.data.deploy[0])).toBe(JSON.stringify({
-    job_token: {
-      project_id: "ELM-PROJECT-ID",
-      token: "ELM-TOKEN",
-    },
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-  }));
-
-  expect(message_store.data.post.length).toBe(0);
-  expect(message_store.data.add.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [],
+  });
+  expect(job_store.data).toEqual({
+    deploy: [
+      {
+        job_token: {
+          project_id: "ELM-PROJECT-ID",
+          token: "ELM-TOKEN",
+        },
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+      },
+    ],
+  });
 });
 
 const init_repository = () => {
