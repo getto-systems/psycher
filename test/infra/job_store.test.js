@@ -14,17 +14,20 @@ test("trigger", async () => {
     },
   });
 
-  expect(gitlab_api.data.trigger.length).toBe(1);
-  expect(JSON.stringify(gitlab_api.data.trigger[0])).toBe(JSON.stringify({
-    project_id: "PROJECT-ID",
-    token: "TOKEN",
-    ref: "master",
-    variables: {
-      RELEASE: "true",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-  }));
+  expect(gitlab_api.data).toEqual({
+    trigger: [
+      {
+        project_id: "PROJECT-ID",
+        token: "TOKEN",
+        ref: "master",
+        variables: {
+          RELEASE: "true",
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+      },
+    ],
+  });
 });
 
 const init_job_store = () => {

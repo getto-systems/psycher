@@ -13,16 +13,18 @@ test("post", async () => {
     text: "TEXT",
   });
 
-  expect(message_store.data.post.length).toBe(1);
-  expect(JSON.stringify(message_store.data.post[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-    },
-    text: "TEXT",
-  }));
-
-  expect(message_store.data.add.length).toBe(0);
+  expect(message_store.data).toEqual({
+    post: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+        },
+        text: "TEXT",
+      },
+    ],
+    add: [],
+  });
 });
 
 test("add", async () => {
@@ -36,17 +38,19 @@ test("add", async () => {
     name: "NAME",
   });
 
-  expect(message_store.data.post.length).toBe(0);
-
-  expect(message_store.data.add.length).toBe(1);
-  expect(JSON.stringify(message_store.data.add[0])).toBe(JSON.stringify({
-    token: "MESSAGE-TOKEN",
-    reply_to: {
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    name: "NAME",
-  }));
+  expect(message_store.data).toEqual({
+    post: [],
+    add: [
+      {
+        token: "MESSAGE-TOKEN",
+        reply_to: {
+          channel: "CHANNEL",
+          timestamp: "TIMESTAMP",
+        },
+        name: "NAME",
+      },
+    ],
+  });
 });
 
 const init_stream = () => {

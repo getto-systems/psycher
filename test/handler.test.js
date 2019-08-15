@@ -9,11 +9,7 @@ test("init event type handler", async () => {
 });
 
 test("unknown type", async () => {
-  try {
+  expect(() => {
     handler.init({type: "unknown"});
-
-    throw "unknown handler error not throwed";
-  } catch (e) {
-    expect(e).toBe("unknown event type: unknown");
-  }
+  }).toThrow("unknown event type: unknown");
 });
