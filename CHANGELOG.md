@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.0.0
+
+model arranged! See merge request getto-psycher/slack!68
+
+
 ## Version : 1.23.0
 
 fix: test See merge request getto-psycher/slack!67
