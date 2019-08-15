@@ -2,7 +2,7 @@
 
 getto-psycher slack endpoint
 
-status: production ready
+status: production ready : model arranged
 
 
 ###### Table of Contents
