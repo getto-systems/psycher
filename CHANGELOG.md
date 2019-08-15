@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.22.0
+
+fix: lock strategy See merge request getto-psycher/slack!64
+
+
 ## Version : 1.21.2
 
 
