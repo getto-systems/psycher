@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 1.22.2
+
+
+
 ## Version : 1.22.1
 
 fix: aws_dynamodb See merge request getto-psycher/slack!65
