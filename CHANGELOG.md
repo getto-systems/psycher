@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.1.2
+
+- fix: CHANGELOG : See merge request getto-psycher/slack!71
+
+
 ## Version : 2.1.1
 
 - update: getto-aws_dynamodb : See merge request getto-psycher/slack!70
