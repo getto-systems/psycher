@@ -23,5 +23,7 @@ const init_uuid_store = (struct) => {
 };
 
 const init_uuid = ({uuid}) => {
-  return () => uuid;
+  return {
+    generate: () => uuid,
+  };
 };
