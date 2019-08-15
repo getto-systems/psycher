@@ -18,6 +18,7 @@
     "getto-aws_secrets": "^1.0.0",
     "getto-gitlab_api": "^1.0.1",
     "getto-memoize": "^1.0.0",
-    "getto-slack_api": "^1.0.2"
+    "getto-slack_api": "^1.0.2",
+    "uuid": "^3.3.2"
   }
 }

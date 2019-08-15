@@ -6,6 +6,7 @@ const deployment_factory = require("../lib/deployment");
 const stream_factory = require("../lib/stream");
 const pipeline_factory = require("../lib/pipeline");
 
+const uuid_store_factory = require("./infra/uuid_store");
 const document_store_factory = require("./infra/document_store");
 const secret_store_factory = require("./infra/secret_store");
 const message_store_factory = require("./infra/message_store");
@@ -154,8 +155,11 @@ const init_repository = () => {
   });
 
   const session = session_factory.init({
+    uuid_store: uuid_store_factory.init({
+      uuid: "UUID",
+    }),
     document_store: document_store_factory.init({
-      put_error: null,
+      started_conversations_exists: true,
     }),
   });
   const deployment = deployment_factory.init({

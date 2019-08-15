@@ -8,6 +8,7 @@ const deployment_factory = require("../../lib/deployment");
 const stream_factory = require("../../lib/stream");
 const pipeline_factory = require("../../lib/pipeline");
 
+const uuid_store_factory = require("../infra/uuid_store");
 const document_store_factory = require("../infra/document_store");
 const secret_store_factory = require("../infra/secret_store");
 const message_store_factory = require("../infra/message_store");
@@ -17,7 +18,7 @@ const i18n_factory = require("../i18n");
 
 test("deploy elm", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: null,
+    started_conversations_exists: true,
     deploy_error: null,
     type: "app_mention",
     text: "deploy elm",
@@ -51,7 +52,7 @@ test("deploy elm", async () => {
 
 test("deploy error", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: null,
+    started_conversations_exists: true,
     deploy_error: "deploy-error",
     type: "app_mention",
     text: "deploy elm",
@@ -75,7 +76,7 @@ test("deploy error", async () => {
 
 test("deploy target not found", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: null,
+    started_conversations_exists: true,
     deploy_error: null,
     type: "app_mention",
     text: "deploy unknown",
@@ -100,7 +101,7 @@ test("deploy target not found", async () => {
 
 test("greeting", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: null,
+    started_conversations_exists: true,
     deploy_error: null,
     type: "app_mention",
     text: "hello",
@@ -125,7 +126,7 @@ test("greeting", async () => {
 
 test("unknown mention", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: null,
+    started_conversations_exists: true,
     deploy_error: null,
     type: "app_mention",
     text: "unknown",
@@ -150,7 +151,7 @@ test("unknown mention", async () => {
 
 test("do not duplicate deploy", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
-    put_error: "put error",
+    started_conversations_exists: false,
     deploy_error: null,
     type: "app_mention",
     text: "deploy elm",
@@ -163,9 +164,9 @@ test("do not duplicate deploy", async () => {
   expect(job_store.data.deploy.length).toBe(0);
 });
 
-const init_conversation = ({put_error, type, deploy_error, text}) => {
+const init_conversation = ({started_conversations_exists, type, deploy_error, text}) => {
   const {repository, message_store, job_store} = init_repository({
-    put_error,
+    started_conversations_exists,
     deploy_error,
   });
 
@@ -190,7 +191,7 @@ const init_conversation = ({put_error, type, deploy_error, text}) => {
   };
 };
 
-const init_repository = ({put_error, deploy_error}) => {
+const init_repository = ({started_conversations_exists, deploy_error}) => {
   const secret_store = secret_store_factory.init({
     message_token: "MESSAGE-TOKEN",
     job_targets: ["elm", "rails"],
@@ -202,8 +203,11 @@ const init_repository = ({put_error, deploy_error}) => {
   });
 
   const session = session_factory.init({
+    uuid_store: uuid_store_factory.init({
+      uuid: "UUID",
+    }),
     document_store: document_store_factory.init({
-      put_error,
+      started_conversations_exists,
     }),
   });
   const deployment = deployment_factory.init({
