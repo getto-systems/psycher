@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.1.0
+
+fix: querying dynamodb See merge request getto-psycher/slack!69
+
+
 ## Version : 2.0.0
 
 model arranged! See merge request getto-psycher/slack!68
