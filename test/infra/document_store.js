@@ -3,13 +3,10 @@ exports.init = (data) => init(data);
 /**
  * returns infra/document_store
  */
-const init = ({put_error}) => {
+const init = ({started_conversations_exists}) => {
   const started_conversations = {
-    put: async () => {
-      if (put_error) {
-        throw put_error;
-      }
-    },
+    put: async () => null,
+    exists: async () => started_conversations_exists,
   };
 
   return {

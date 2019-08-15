@@ -13,6 +13,7 @@ const repository = {
 };
 
 const infra = {
+  uuid_store: require("./lib/infra/uuid_store"),
   document_store: require("./lib/infra/document_store"),
   secret_store: require("./lib/infra/secret_store"),
 
@@ -21,6 +22,8 @@ const infra = {
 };
 
 const vendor = {
+  uuid: require("uuid/v4"),
+
   aws_dynamodb: require("getto-aws_dynamodb"),
   aws_secrets: require("getto-aws_secrets"),
 
@@ -72,6 +75,9 @@ const handle = (event_info) => {
 };
 
 const init_repository = () => {
+  const uuid_store = infra.uuid_store.init({
+    uuid: vendor.uuid,
+  });
   const document_store = infra.document_store.init({
     aws_dynamodb: vendor.aws_dynamodb.init({
       region: process.env.REGION,
@@ -92,6 +98,7 @@ const init_repository = () => {
   });
 
   const session = repository.session.init({
+    uuid_store,
     document_store,
   });
   const deployment = repository.deployment.init({
