@@ -3,7 +3,7 @@ const document_store = require("../../lib/infra/document_store");
 test("started_conversations.put", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: null,
-    item: {Item: {}},
+    items: null,
   });
 
   await store.started_conversations.put({
@@ -28,14 +28,14 @@ test("started_conversations.put", async () => {
         ConditionExpression: "attribute_not_exists(team) and attribute_not_exists(conversation)",
       },
     ],
-    get: [],
+    query: [],
   });
 });
 
 test("started_conversations.put error", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: "already put",
-    item: {Item: {}},
+    items: null,
   });
 
   await store.started_conversations.put({
@@ -51,7 +51,7 @@ test("started_conversations.put error", async () => {
 test("started_conversations.exists", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: null,
-    item: {Item: {progress_id: "PROGRESS-ID"}},
+    items: [{progress_id: "PROGRESS-ID"}],
   });
 
   const result = await store.started_conversations.exists({
@@ -68,24 +68,26 @@ test("started_conversations.exists", async () => {
   expect(aws_dynamodb.data).toEqual({
     documentClient: 1,
     put: [],
-    get: [
+    query: [
       {
         TableName: "started_conversations",
-        Key: {
-          team: "TEAM",
-          conversation: "CHANNEL:TIMESTAMP",
+        KeyConditionExpression: "team = :team and conversation = :conversation",
+        FilterExpression: "progress_id = :progress_id",
+        ExpressionAttributeValues: {
+          ":team": "TEAM",
+          ":conversation": "CHANNEL:TIMESTAMP",
+          ":progress_id": "PROGRESS-ID",
         },
-        ConsistentRead: true,
         ProjectionExpression: "progress_id",
       },
     ],
   });
 });
 
-test("started_conversations.exists different progress_id", async () => {
+test("started_conversations.exists no items", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: "already put",
-    item: {Item: {progress_id: "DIFFERENT-PROGRESS-ID"}},
+    items: [],
   });
 
   const result = await store.started_conversations.exists({
@@ -102,24 +104,26 @@ test("started_conversations.exists different progress_id", async () => {
   expect(aws_dynamodb.data).toEqual({
     documentClient: 1,
     put: [],
-    get: [
+    query: [
       {
         TableName: "started_conversations",
-        Key: {
-          team: "TEAM",
-          conversation: "CHANNEL:TIMESTAMP",
+        KeyConditionExpression: "team = :team and conversation = :conversation",
+        FilterExpression: "progress_id = :progress_id",
+        ExpressionAttributeValues: {
+          ":team": "TEAM",
+          ":conversation": "CHANNEL:TIMESTAMP",
+          ":progress_id": "PROGRESS-ID",
         },
-        ConsistentRead: true,
         ProjectionExpression: "progress_id",
       },
     ],
   });
 });
 
-test("started_conversations.exists no progress_id", async () => {
+test("started_conversations.exists null items", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: "already put",
-    item: {Item: {}},
+    items: null,
   });
 
   const result = await store.started_conversations.exists({
@@ -136,82 +140,16 @@ test("started_conversations.exists no progress_id", async () => {
   expect(aws_dynamodb.data).toEqual({
     documentClient: 1,
     put: [],
-    get: [
+    query: [
       {
         TableName: "started_conversations",
-        Key: {
-          team: "TEAM",
-          conversation: "CHANNEL:TIMESTAMP",
+        KeyConditionExpression: "team = :team and conversation = :conversation",
+        FilterExpression: "progress_id = :progress_id",
+        ExpressionAttributeValues: {
+          ":team": "TEAM",
+          ":conversation": "CHANNEL:TIMESTAMP",
+          ":progress_id": "PROGRESS-ID",
         },
-        ConsistentRead: true,
-        ProjectionExpression: "progress_id",
-      },
-    ],
-  });
-});
-
-test("started_conversations.exists no item", async () => {
-  const {store, aws_dynamodb} = init_document_store({
-    put_error: "already put",
-    item: {},
-  });
-
-  const result = await store.started_conversations.exists({
-    session_id: {
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    progress_id: "PROGRESS-ID",
-  });
-
-  expect(result).toBe(false);
-
-  expect(aws_dynamodb.data).toEqual({
-    documentClient: 1,
-    put: [],
-    get: [
-      {
-        TableName: "started_conversations",
-        Key: {
-          team: "TEAM",
-          conversation: "CHANNEL:TIMESTAMP",
-        },
-        ConsistentRead: true,
-        ProjectionExpression: "progress_id",
-      },
-    ],
-  });
-});
-
-test("started_conversations.exists null item", async () => {
-  const {store, aws_dynamodb} = init_document_store({
-    put_error: "already put",
-    item: null,
-  });
-
-  const result = await store.started_conversations.exists({
-    session_id: {
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-    },
-    progress_id: "PROGRESS-ID",
-  });
-
-  expect(result).toBe(false);
-
-  expect(aws_dynamodb.data).toEqual({
-    documentClient: 1,
-    put: [],
-    get: [
-      {
-        TableName: "started_conversations",
-        Key: {
-          team: "TEAM",
-          conversation: "CHANNEL:TIMESTAMP",
-        },
-        ConsistentRead: true,
         ProjectionExpression: "progress_id",
       },
     ],
@@ -221,7 +159,7 @@ test("started_conversations.exists null item", async () => {
 test("documentClient call only once", async () => {
   const {store, aws_dynamodb} = init_document_store({
     put_error: "already put",
-    item: null,
+    items: null,
   });
 
   await store.started_conversations.put({
@@ -257,11 +195,11 @@ const init_document_store = (struct) => {
   };
 };
 
-const init_aws_dynamodb = ({put_error, item}) => {
+const init_aws_dynamodb = ({put_error, items}) => {
   let data = {
     documentClient: 0,
     put: [],
-    get: [],
+    query: [],
   };
 
   const documentClient = () => {
@@ -275,9 +213,11 @@ const init_aws_dynamodb = ({put_error, item}) => {
         }
       },
 
-      get: async (struct) => {
-        data.get.push(struct);
-        return item;
+      query: async (struct) => {
+        data.query.push(struct);
+        return {
+          Items: items
+        };
       },
     };
   };
