@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 1.22.1
+
+fix: aws_dynamodb See merge request getto-psycher/slack!65
+
+
 ## Version : 1.22.0
 
 fix: lock strategy See merge request getto-psycher/slack!64
