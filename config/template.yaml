@@ -22,7 +22,7 @@ Resources:
       Runtime: nodejs10.x
       Handler: index.handler
       MemorySize: 128
-      Timeout: 3
+      Timeout: 5
       CodeUri: ..
       AutoPublishAlias: active
       KmsKeyArn:
