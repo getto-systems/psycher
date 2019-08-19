@@ -1,6 +1,6 @@
 "use strict";
 
-const slack_bot_event = require("./lib/slack_bot_event");
+const slack_bot_event = require("./lib/ui/slack_bot_event");
 const conversation_factory = require("./lib/conversation");
 const handler = require("./lib/handler");
 
