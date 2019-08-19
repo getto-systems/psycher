@@ -1,4 +1,4 @@
-const slack_bot_event = require("../lib/slack_bot_event");
+const slack_bot_event = require("../../lib/ui/slack_bot_event");
 
 test("init event_info", async () => {
   const event_info = slack_bot_event.parse({
