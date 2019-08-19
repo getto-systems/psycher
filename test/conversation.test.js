@@ -12,45 +12,6 @@ const secret_store_factory = require("./infra/secret_store");
 const message_store_factory = require("./infra/message_store");
 const job_store_factory = require("./infra/job_store");
 
-test("init conversation", async () => {
-  const {repository, message_store, job_store} = init_repository();
-
-  const conversation = conversation_factory.init({
-    event_info: {
-      type: "app_mention",
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-      text: "deploy elm",
-    },
-    repository,
-  });
-
-  expect(conversation.includes("deploy")).toBe(true);
-  expect(conversation.includes_some(["deploy"])).toBe(true);
-
-  expect(await conversation.is_already_started()).toBe(false);
-  expect(await conversation.has_no_deploy_target()).toBe(false);
-});
-
-test("nothing effect on double is_already_started check", async () => {
-  const {repository, message_store, job_store} = init_repository();
-
-  const conversation = conversation_factory.init({
-    event_info: {
-      type: "app_mention",
-      team: "TEAM",
-      channel: "CHANNEL",
-      timestamp: "TIMESTAMP",
-      text: "deploy elm",
-    },
-    repository,
-  });
-
-  expect(await conversation.is_already_started()).toBe(false);
-  expect(await conversation.is_already_started()).toBe(false);
-});
-
 test("reply message", async () => {
   const {repository, message_store, job_store} = init_repository();
 
