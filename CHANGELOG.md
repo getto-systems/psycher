@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 2.2.1
+
+
+
 ## Version : 2.2.0
 
 - refactor: conversation.condition : See merge request getto-psycher/slack!72
