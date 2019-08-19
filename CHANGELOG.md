@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.3.0
+
+- refactor: move slack_bot_event to ui : See merge request getto-psycher/slack!73
+
+
 ## Version : 2.2.1
 
 
