@@ -8,13 +8,13 @@ test("started_conversations exists", async () => {
     started_conversations_exists: true,
   });
 
-  const result = await session.is_already_started({
+  const result = await session.is_not_started({
     team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
   });
 
-  expect(result).toBe(false);
+  expect(result).toBe(true);
 });
 
 test("started_conversations not exists", async () => {
@@ -22,13 +22,13 @@ test("started_conversations not exists", async () => {
     started_conversations_exists: false,
   });
 
-  const result = await session.is_already_started({
+  const result = await session.is_not_started({
     team: "TEAM",
     channel: "CHANNEL",
     timestamp: "TIMESTAMP",
   });
 
-  expect(result).toBe(true);
+  expect(result).toBe(false);
 });
 
 test("generate uuid", async () => {

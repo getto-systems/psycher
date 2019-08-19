@@ -1,4 +1,4 @@
-const handler = require("../../lib/handlers/mention");
+const handler = require("../../lib/handler");
 
 const conversation_factory = require("../../lib/conversation");
 
@@ -20,11 +20,14 @@ test("deploy elm", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: true,
     deploy_error: null,
-    type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [],
@@ -59,11 +62,14 @@ test("deploy error", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: true,
     deploy_error: "deploy-error",
-    type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [],
@@ -87,11 +93,14 @@ test("deploy target not found", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: true,
     deploy_error: null,
-    type: "app_mention",
     text: "deploy unknown",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [
@@ -115,11 +124,14 @@ test("greeting", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: true,
     deploy_error: null,
-    type: "app_mention",
     text: "hello",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [
@@ -143,11 +155,14 @@ test("unknown mention", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: true,
     deploy_error: null,
-    type: "app_mention",
     text: "unknown",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [
@@ -171,11 +186,14 @@ test("do not duplicate deploy", async () => {
   const {conversation, i18n, message_store, job_store} = init_conversation({
     started_conversations_exists: false,
     deploy_error: null,
-    type: "app_mention",
     text: "deploy elm",
   });
 
-  await handler.init(i18n).operate(conversation);
+  await handler.perform(handler.detect_actions({
+    type: "app_mention",
+    i18n,
+    conversation,
+  }));
 
   expect(message_store.data).toEqual({
     post: [],
@@ -207,7 +225,7 @@ const init_conversation = ({started_conversations_exists, type, deploy_error, te
 
   return {
     conversation,
-    i18n: i18n.mention,
+    i18n,
     message_store,
     job_store,
   };

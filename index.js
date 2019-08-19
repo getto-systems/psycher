@@ -71,7 +71,13 @@ const handle = (event_info) => {
   });
   const i18n = i18n_factory.init("ja");
 
-  return handler.init({type: event_info.type, i18n}).operate(conversation);
+  const actions = handler.detect_actions({
+    type: event_info.type,
+    i18n,
+    conversation,
+  });
+
+  return handler.perform(actions);
 };
 
 const init_repository = () => {
