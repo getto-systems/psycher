@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 2.4.1
+
+
+
 ## Version : 2.4.0
 
 - fix: notify.sh : See merge request getto-psycher/slack!74
