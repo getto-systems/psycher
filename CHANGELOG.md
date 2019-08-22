@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.5.0
+
+- fix: check body : See merge request getto-psycher/slack!78
+
+
 ## Version : 2.4.4
 
 - fix: notify : See merge request getto-psycher/slack!77
