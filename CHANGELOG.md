@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.4.4
+
+- fix: notify : See merge request getto-psycher/slack!77
+
+
 ## Version : 2.4.3
 
 - fix: notify : See merge request getto-psycher/slack!76
