@@ -52,7 +52,6 @@ push_image:
   stage: build
   only:
     refs:
-      - merge_requests
       - master@getto-psycher/slack
     changes:
       - package.json
