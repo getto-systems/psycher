@@ -21,15 +21,17 @@ RUN set -x && \
   : "cleanup apt caches" && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  : "prepare app directory" && \
-  mkdir -p /opt/app && \
   : "add working user" && \
   useradd getto && \
+  : "prepare app directory" && \
+  mkdir -p /opt/app && \
+  chown getto:getto /opt/app && \
   :
 
 COPY package*.json /opt/app/
 
 WORKDIR /opt/app
+USER getto
 
 RUN set -x && \
   : "install node modules" && \
