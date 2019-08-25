@@ -22,7 +22,7 @@ RUN set -x && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   : "add working user" && \
-  useradd getto && \
+  useradd -m getto && \
   : "prepare app directory" && \
   mkdir -p /opt/app && \
   chown getto:getto /opt/app && \
