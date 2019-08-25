@@ -23,6 +23,8 @@ RUN set -x && \
   rm -rf /var/lib/apt/lists/* && \
   : "prepare app directory" && \
   mkdir -p /opt/app && \
+  : "add working user" && \
+  useradd getto && \
   :
 
 COPY package*.json /opt/app/
