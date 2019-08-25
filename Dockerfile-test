@@ -1,4 +1,4 @@
-FROM getto/psycher-slack:dev
+FROM getto/hangar:ptLsCSfwmiGWHZFO
 
 COPY index.js jest.config.json /opt/app/
 COPY lib /opt/app/lib
