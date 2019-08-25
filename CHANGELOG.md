@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.5.2
+
+- fix: push_tags : See merge request getto-psycher/slack!80
+
+
 ## Version : 2.5.1
 
 - update: dependencies : See merge request getto-psycher/slack!79
