@@ -10,6 +10,8 @@ test:
     refs:
       - merge_requests
     changes:
+      - package.json
+      - package-lock.json
       - index.js
       - lib/**/*
       - test/**/*
