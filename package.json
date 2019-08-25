@@ -11,15 +11,15 @@
   "license": "MIT",
   "devDependencies": {
     "exec-on-changed": "^1.2.0",
-    "jest": "^24.8.0"
+    "jest": "^24.9.0"
   },
   "dependencies": {
-    "getto-aws_dynamodb": "^1.3.0",
-    "getto-aws_secrets": "^1.0.0",
-    "getto-gitlab_api": "^1.0.1",
-    "getto-memoize": "^1.0.0",
-    "getto-slack_api": "^1.0.2",
-    "getto-specification": "^1.0.0",
-    "uuid": "^3.3.2"
+    "getto-aws_dynamodb": "^1.3.2",
+    "getto-aws_secrets": "^1.0.1",
+    "getto-gitlab_api": "^1.0.2",
+    "getto-memoize": "^1.0.1",
+    "getto-slack_api": "^1.0.3",
+    "getto-specification": "^1.0.1",
+    "uuid": "^3.3.3"
   }
 }
