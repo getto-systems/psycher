@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## Version : 2.5.1
+
+- update: dependencies : See merge request getto-psycher/slack!79
+
+- build(deps): bump getto-slack_api from 1.0.2 to 1.0.3
+- build(deps): bump getto-aws_secrets from 1.0.0 to 1.0.1
+- build(deps): bump getto-memoize from 1.0.0 to 1.0.1
+- build(deps): bump getto-gitlab_api from 1.0.1 to 1.0.2
+- build(deps): bump uuid from 3.3.2 to 3.3.3
+- build(deps-dev): bump jest from 24.8.0 to 24.9.0
+- build(deps): bump getto-specification from 1.0.0 to 1.0.1
+- build(deps): bump getto-aws_dynamodb from 1.3.0 to 1.3.2
+
+
 ## Version : 2.5.0
 
 - fix: check body : See merge request getto-psycher/slack!78
