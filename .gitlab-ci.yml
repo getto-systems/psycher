@@ -46,6 +46,8 @@ build:
       - .cache
 
   script:
+    - pwd
+    - ls -al
     - getto-hangar-build.sh
 
 push_image:
