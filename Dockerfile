@@ -14,6 +14,8 @@ RUN set -x && \
   : apt-get install -y --no-install-recommends \
     bzip2 \
   && \
+  : "install awscli" && \
+  pip3 install awscli && \
   : "install node" && \
   curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
   apt-get install -y nodejs && \
