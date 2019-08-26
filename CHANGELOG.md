@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version : 2.5.4
+
+- fix: Dockerfile : See merge request getto-psycher/slack!91
+- fix: Dockerfile : See merge request getto-psycher/slack!90
+- fix: gitlab-ci : See merge request getto-psycher/slack!89
+
+
 ## Version : 2.5.3
 
 - fix: gitlab-ci : See merge request getto-psycher/slack!88
