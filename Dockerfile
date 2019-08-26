@@ -27,7 +27,7 @@ RUN set -x && \
   : "prepare app directory" && \
   mkdir -p /opt/app && \
   chown getto:getto /opt/app && \
-  :
+  : "environment prepared"
 
 COPY package*.json /opt/app/
 
@@ -37,6 +37,6 @@ USER getto
 RUN set -x && \
   : "install node modules" && \
   npm clean-install && \
-  :
+  : "project modules installed"
 
 CMD ["/bin/bash"]
