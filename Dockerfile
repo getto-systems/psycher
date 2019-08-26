@@ -37,6 +37,6 @@ USER getto
 RUN set -x && \
   : "install node modules" && \
   npm clean-install && \
-  : "project modules installed"
+  : "project prepared"
 
 CMD ["/bin/bash"]
