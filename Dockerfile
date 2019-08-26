@@ -4,7 +4,6 @@ ENV NODE_VERSION 10
 
 RUN set -x && \
   apt-get update && \
-  : apt-get install -y apt-utils && \
   apt-get install -y \
     ca-certificates \
     curl \
