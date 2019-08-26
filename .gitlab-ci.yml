@@ -78,7 +78,6 @@ push_image:
     refs:
       - master@getto-psycher/slack
     changes:
-      - package.json
       - package-lock.json
       - Dockerfile
       - Dockerfile-test
