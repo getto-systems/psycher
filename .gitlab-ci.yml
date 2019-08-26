@@ -21,6 +21,28 @@ test:
   script:
     - npm test
 
+check:
+  stage: build
+  only:
+    refs:
+      - schedules
+
+  image: getto/hangar:latest
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  cache:
+    paths:
+      - .cache
+
+  script:
+    - getto-hangar-build.sh
+
 build:
   stage: build
   only:
