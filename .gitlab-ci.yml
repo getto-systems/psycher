@@ -26,6 +26,8 @@ check:
   only:
     refs:
       - schedules
+    variables:
+      - $CHECK
 
   image: getto/hangar:latest
 
