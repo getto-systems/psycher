@@ -82,6 +82,9 @@ push_image:
       - package-lock.json
       - Dockerfile
       - Dockerfile-test
+  except:
+    refs:
+      - schedules
 
   image: getto/hangar:latest
 
