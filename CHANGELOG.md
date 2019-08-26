@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## Version : 2.5.3
+
+- fix: gitlab-ci : See merge request getto-psycher/slack!88
+- add: awscli : See merge request getto-psycher/slack!87
+- fix: Dockerfile : See merge request getto-psycher/slack!86
+- fix: gitlab-ci : See merge request getto-psycher/slack!85
+- fix: gitlab-ci : See merge request getto-psycher/slack!84
+- add: schedules : See merge request getto-psycher/slack!83
+- fix: package name : See merge request getto-psycher/slack!82
+- add: Dockerfile : See merge request getto-psycher/slack!81
+
+
 ## Version : 2.5.2
 
 - fix: push_tags : See merge request getto-psycher/slack!80

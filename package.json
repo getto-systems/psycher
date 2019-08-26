@@ -1,7 +1,7 @@
 {
   "name": "getto-psycher-slack",
   "description": "getto-psycher slack endpoint",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "scripts": {
     "start": "npm run watch",
     "watch": "npm run watch:lib & npm run watch:test",
