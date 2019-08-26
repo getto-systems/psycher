@@ -84,6 +84,7 @@ push_image:
   except:
     refs:
       - schedules
+      - triggers
 
   image: getto/hangar:latest
 
