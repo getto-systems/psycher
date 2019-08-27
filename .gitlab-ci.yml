@@ -51,7 +51,6 @@ build:
     refs:
       - merge_requests
     changes:
-      - package.json
       - package-lock.json
       - Dockerfile
       - Dockerfile-test
