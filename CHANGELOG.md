@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version : 2.5.6
+
+- fix: gitlab-ci : See merge request getto-systems-base/psycher/slack!95
+- fix: push_tags : See merge request getto-systems-base/psycher/slack!94
+- fix: push_tags : See merge request getto-systems-base/psycher/slack!93
+- fix: update npm : See merge request getto-psycher/slack!92
+
+
 ## Version : 2.5.5
 
 - fix: push_tags : See merge request getto-systems-base/psycher/slack!93
