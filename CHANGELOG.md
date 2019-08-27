@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.5.5
+
+- fix: push_tags : See merge request getto-systems-base/psycher/slack!93
+- fix: update npm : See merge request getto-psycher/slack!92
+
+
 ## Version : 2.5.4
 
 - fix: Dockerfile : See merge request getto-psycher/slack!91
