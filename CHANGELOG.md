@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version : 2.5.7
+
+- fix: push_tags : See merge request getto-systems-base/projects/psycher/slack!98
+- add: git-maint-repo : See merge request getto-systems-base/projects/psycher/slack!97
+- add: trivy-opts : See merge request getto-systems-base/projects/psycher/slack!96
+
+
 ## Version : 2.5.6
 
 - fix: gitlab-ci : See merge request getto-systems-base/psycher/slack!95
