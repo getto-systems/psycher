@@ -43,7 +43,7 @@ check:
       - .cache
 
   script:
-    - getto-hangar-build.sh
+    - getto-hangar-test.sh
 
 build:
   stage: build
