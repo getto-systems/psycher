@@ -11,8 +11,10 @@ RUN set -x && \
     python3-pip \
   && \
   : "to fix vulnerabilities, update following packages" && \
-  : apt-get install -y --no-install-recommends \
-    bzip2 \
+  apt-get install -y --no-install-recommends \
+    libsystemd0 \
+    libudev1 \
+    linux-libc-dev \
   && \
   : "install awscli" && \
   pip3 install awscli && \
