@@ -15,6 +15,8 @@ RUN set -x && \
     libsystemd0 \
     libudev1 \
     linux-libc-dev \
+    libexpat1 \
+    libexpat1-dev \
   && \
   : "install awscli" && \
   pip3 install awscli && \
