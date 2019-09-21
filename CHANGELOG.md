@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Version : 2.6.0
+
+- rename: message from replyer : See merge request getto-systems-base/projects/psycher/slack!106
+- fix: dockerfile : See merge request getto-systems-base/projects/psycher/slack!105
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!103
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!102
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!101
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!100
+- fix: dockerignore : See merge request getto-systems-base/projects/psycher/slack!99
+
+
 ## Version : 2.5.7
 
 - fix: push_tags : See merge request getto-systems-base/projects/psycher/slack!98
