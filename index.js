@@ -5,11 +5,12 @@ const conversation_factory = require("./lib/conversation");
 const handler = require("./lib/handler");
 
 const repository = {
-  session: require("./lib/session"),
-  deployment: require("./lib/deployment"),
+  session: require("./lib/conversation/progress/session"),
 
-  stream: require("./lib/stream"),
-  pipeline: require("./lib/pipeline"),
+  deployment: require("./lib/conversation/job/deployment"),
+  pipeline: require("./lib/conversation/job/pipeline"),
+
+  stream: require("./lib/conversation/message/stream"),
 };
 
 const infra = {

@@ -2,11 +2,12 @@ const handler = require("../../lib/handler");
 
 const conversation_factory = require("../../lib/conversation");
 
-const session_factory = require("../../lib/session");
-const deployment_factory = require("../../lib/deployment");
+const session_factory = require("../../lib/conversation/progress/session");
 
-const stream_factory = require("../../lib/stream");
-const pipeline_factory = require("../../lib/pipeline");
+const deployment_factory = require("../../lib/conversation/job/deployment");
+const pipeline_factory = require("../../lib/conversation/job/pipeline");
+
+const stream_factory = require("../../lib/conversation/message/stream");
 
 const uuid_store_factory = require("../infra/uuid_store");
 const document_store_factory = require("../infra/document_store");

@@ -1,7 +1,7 @@
-const stream_factory = require("../lib/stream");
+const stream_factory = require("../../../lib/conversation/message/stream");
 
-const secret_store_factory = require("./infra/secret_store");
-const message_store_factory = require("./infra/message_store");
+const secret_store_factory = require("../../infra/secret_store");
+const message_store_factory = require("../../infra/message_store");
 
 test("post", async () => {
   const {stream, message_store} = init_stream();
