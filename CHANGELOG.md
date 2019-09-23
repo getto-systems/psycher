@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.7.0
+
+- fix: repository location : See merge request getto-systems-base/projects/psycher/slack!108
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!107
+
+
 ## Version : 2.6.1
 
 
