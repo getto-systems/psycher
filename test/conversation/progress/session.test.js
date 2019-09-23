@@ -1,7 +1,7 @@
-const session_factory = require("../lib/session");
+const session_factory = require("../../../lib/conversation/progress/session");
 
-const uuid_store_factory = require("./infra/uuid_store");
-const document_store_factory = require("./infra/document_store");
+const uuid_store_factory = require("../../infra/uuid_store");
+const document_store_factory = require("../../infra/document_store");
 
 test("started_conversations exists", async () => {
   const session = init_session({

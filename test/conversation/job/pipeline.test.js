@@ -1,7 +1,7 @@
-const pipeline_factory = require("../lib/pipeline");
+const pipeline_factory = require("../../../lib/conversation/job/pipeline");
 
-const secret_store_factory = require("./infra/secret_store");
-const job_store_factory = require("./infra/job_store");
+const secret_store_factory = require("../../infra/secret_store");
+const job_store_factory = require("../../infra/job_store");
 
 test("deploy", async () => {
   const {pipeline, job_store} = init_pipeline({
