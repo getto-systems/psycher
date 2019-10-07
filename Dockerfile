@@ -11,12 +11,11 @@ RUN set -x && \
     python3-pip \
   && \
   : "to fix vulnerabilities, update packages : 2019-10-08" && \
-  : apt-get install -y --no-install-recommends \
-    libsystemd0 \
-    libudev1 \
-    linux-libc-dev \
-    libexpat1 \
-    libexpat1-dev \
+  apt-get install -y --no-install-recommends \
+    e2fsprogs \
+    libcom-err2 \
+    libext2fs2 \
+    libss2 \
   && \
   : "install awscli" && \
   pip3 install awscli && \
