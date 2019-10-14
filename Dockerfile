@@ -11,7 +11,7 @@ RUN set -x && \
     python3-pip \
   && \
   : "to fix vulnerabilities, update packages : 2019-10-14" && \
-  : apt-get install -y --no-install-recommends \
+  apt-get install -y --no-install-recommends \
     e2fsprogs \
     libcom-err2 \
     libext2fs2 \
