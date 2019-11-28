@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Version : 2.7.1
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!115
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!114
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!113
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!112
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!111
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!110
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!109
+
+
 ## Version : 2.7.0
 
 - fix: repository location : See merge request getto-systems-base/projects/psycher/slack!108
