@@ -2,9 +2,13 @@ image: getto/hangar:ptLsCSfwmiGWHZFO-20191119043831
 
 stages:
   - test
-  - build
+  - image_build
+  - image_test
+  - image_fix_vulnerabilities
+  - image_push
+  - version_dump
   - release
-  - notify
+  - release_notify
 
 test:
   stage: test
@@ -21,32 +25,8 @@ test:
   script:
     - npm test
 
-check:
-  stage: build
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-
-  image: getto/hangar:latest
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-  services:
-    - docker:dind
-
-  cache:
-    paths:
-      - .cache
-
-  script:
-    - getto-hangar-test.sh
-
-build:
-  stage: build
+image_build:
+  stage: image_build
   only:
     refs:
       - merge_requests
@@ -71,8 +51,52 @@ build:
   script:
     - getto-hangar-build.sh
 
-push_image:
-  stage: build
+image_test:
+  stage: image_test
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CHECK
+
+  image: getto/hangar:latest
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  cache:
+    paths:
+      - .cache
+
+  script:
+    - getto-hangar-test.sh
+
+image_fix_vulnerabilities:
+  stage: image_fix_vulnerabilities
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CHECK
+  when: on_failure
+
+  image: getto/hangar:latest
+
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+  script:
+    - getto-hangar-fix-vulnerabilities.sh
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.fix-vulnerabilities-message.sh
+
+image_push:
+  stage: image_push
   only:
     refs:
       - master@getto-systems-base/projects/psycher/slack
@@ -91,58 +115,92 @@ push_image:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
-    GIT_USER_NAME: getto
-    GIT_USER_EMAIL: admin@getto.systems
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
   services:
     - docker:dind
 
   script:
     - getto-hangar-push.sh
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.fix-image-message.sh
+
+version_dump:
+  stage: version_dump
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+
+  image: buildpack-deps:disco-scm
+
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+  script:
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.release-version-message.sh
 
 release:
   stage: release
   only:
     refs:
+      - master@getto-systems-base/projects/psycher/slack
+    changes:
+      - .release-version
+  except:
+    refs:
       - triggers
-    variables:
-      - $RELEASE
-
-  variables:
-    GIT_USER_NAME: getto
-    GIT_USER_EMAIL: admin@getto.systems
+      - schedules
 
   before_script:
     - ./bin/restore.sh
   script:
     - npm test
-    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
     - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/push_tags.sh | bash
     - ./bin/deploy.sh
 
 release_success:
-  stage: notify
+  stage: release_notify
   only:
     refs:
+      - master@getto-systems-base/projects/psycher/slack
+    changes:
+      - .release-version
+  except:
+    refs:
       - triggers
-    variables:
-      - $RELEASE
+      - schedules
   when: on_success
 
   image: buildpack-deps:disco-curl
 
+  before_script:
+    - export channel=$SLACK_CHANNEL
   script:
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-deploy.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-release.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
 
 release_failure:
-  stage: notify
+  stage: release_notify
   only:
     refs:
+      - master@getto-systems-base/projects/psycher/slack
+    changes:
+      - .release-version
+  except:
+    refs:
       - triggers
-    variables:
-      - $RELEASE
+      - schedules
   when: on_failure
 
   image: buildpack-deps:disco-curl
 
+  before_script:
+    - export channel=$SLACK_CHANNEL
   script:
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-deploy.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true failure
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-release.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true failure
