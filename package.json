@@ -20,7 +20,7 @@
     "getto-aws_secrets": "^1.0.1",
     "getto-gitlab_api": "^1.0.2",
     "getto-memoize": "^1.0.1",
-    "getto-slack_api": "^1.0.3",
+    "getto-slack_api": "^1.0.4",
     "getto-specification": "^1.0.1",
     "uuid": "^3.3.3"
   }
