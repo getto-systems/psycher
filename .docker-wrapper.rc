@@ -1,4 +1,4 @@
-DOCKER_WRAPPER_IMAGE_node(){ head -1 $APP_ROOT/.gitlab-ci.yml | cut -d' ' -f2; }
+DOCKER_WRAPPER_IMAGE_node(){ cat $APP_ROOT/.getto-hangar-image; }
 DOCKER_WRAPPER_IMAGE_awscli(){ DOCKER_WRAPPER_IMAGE_node; }
 
 DOCKER_WRAPPER_SERVER_OPTS_npm(){ echo "-p ${LABO_PORT_PREFIX}80:8080"; }
