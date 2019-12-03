@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version : 2.7.2
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!122
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!121
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!120
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!118
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!117
+
+
 ## Version : 2.7.1
 
 - fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!115
