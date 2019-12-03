@@ -21,7 +21,7 @@ test:
       - test/**/*
 
   before_script:
-    - ./bin/restore.sh
+    - ./scripts/restore.sh
   script:
     - npm test
 
@@ -159,11 +159,11 @@ release:
       - schedules
 
   before_script:
-    - ./bin/restore.sh
+    - ./scripts/restore.sh
   script:
     - npm test
     - curl https://trellis.getto.systems/ci/bump-version/1.2.2/push_tags.sh | bash
-    - ./bin/deploy.sh
+    - ./scripts/deploy.sh
 
 release_success:
   stage: release_notify

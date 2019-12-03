@@ -1,2 +1,0 @@
-release_build_version
-release_sync_version package.json
