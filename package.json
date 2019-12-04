@@ -21,7 +21,7 @@
     "getto-gitlab_api": "^1.0.2",
     "getto-memoize": "^1.0.1",
     "getto-slack_api": "^1.0.3",
-    "getto-specification": "^1.0.1",
+    "getto-specification": "^1.0.3",
     "uuid": "^3.3.3"
   }
 }
