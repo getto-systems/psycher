@@ -16,7 +16,7 @@
     "jest": "^24.9.0"
   },
   "dependencies": {
-    "getto-aws_dynamodb": "^1.3.2",
+    "getto-aws_dynamodb": "^1.3.4",
     "getto-aws_secrets": "^1.0.1",
     "getto-gitlab_api": "^1.0.2",
     "getto-memoize": "^1.0.1",
