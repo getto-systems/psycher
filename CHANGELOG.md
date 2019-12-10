@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version : 2.7.3
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20191210132247 : See merge request getto-systems-base/projects/psycher/slack!128
+- fix: vulnerabilities : See merge request getto-systems-base/projects/psycher/slack!127
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20191210123234 : See merge request getto-systems-base/projects/psycher/slack!126
+- fix: vulnerabilities : 2019-12-09T01:09:00,235885415 00:00 : See merge request getto-systems-base/projects/psycher/slack!125
+- fix: docker-wrapper : See merge request getto-systems-base/projects/psycher/slack!124
+
+
 ## Version : 2.7.2
 
 - fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!122
