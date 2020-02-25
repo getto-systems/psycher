@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.7.5
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200225051933 : See merge request getto-systems-base/projects/psycher/slack!142
+- update: uuid : See merge request getto-systems-base/projects/psycher/slack!141
+
+
 ## Version : 2.7.4
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200127112644 : See merge request getto-systems-base/projects/psycher/slack!139
