@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.7.16
+
+- fix: deploy.sh : See merge request getto-systems-base/projects/psycher/slack!178
+
+
+
 ## Version : 2.7.15
 
 - fix: deploy.sh : See merge request getto-systems-base/projects/psycher/slack!176
