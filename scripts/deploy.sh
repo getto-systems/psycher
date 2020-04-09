@@ -7,17 +7,11 @@ stack=$CLOUDFORMATION_STACK
 region=$CLOUDFORMATION_REGION
 bucket=$LAMBDA_BUCKET
 
-export HOME=$(pwd)
+AWS_ACCESS_KEY_ID=$(cat $AWS_ACCESS_KEY)
+AWS_SECRET_ACCESS_KEY=$(cat $AWS_SECRET_KEY)
 
-dump_aws_credentials(){
-  echo "[default]"
-  echo "aws_access_key_id = $(cat $AWS_ACCESS_KEY)"
-  echo "aws_secret_access_key = $(cat $AWS_SECRET_KEY)"
-}
-
-mkdir -p .aws
-
-dump_aws_credentials > .aws/credentials
+# workaround : timestamp error
+find . -type f | xargs touch
 
 aws cloudformation package \
   --template-file $template \
