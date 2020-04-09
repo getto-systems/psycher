@@ -1,4 +1,4 @@
-FROM ubuntu:disco
+FROM debian:buster
 
 ENV NODE_VERSION 10
 
@@ -10,12 +10,9 @@ RUN set -x && \
     git \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-01-27" && \
+  : "to fix vulnerabilities, update packages : 2020-04-09" && \
   apt-get install -y --no-install-recommends \
-    e2fsprogs \
-    libcom-err2 \
-    libext2fs2 \
-    libss2 \
+    libgnutls30 \
   && \
   : "install awscli" && \
   pip3 install awscli && \
