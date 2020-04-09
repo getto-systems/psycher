@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version : 2.7.14
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200409035336 : See merge request getto-systems-base/projects/psycher/slack!174
+- update: Dockerfile : See merge request getto-systems-base/projects/psycher/slack!173
+
+
+
 ## Version : 2.7.13
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200409023851 : See merge request getto-systems-base/projects/psycher/slack!171
