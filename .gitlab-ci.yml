@@ -61,11 +61,11 @@ image_test:
   stage: image_test
   only:
     refs:
+      - merge_requests
+    changes:
       - package-lock.json
       - Dockerfile
       - Dockerfile-test
-    changes:
-      - Dockerfile
   needs:
     - image_build
 
