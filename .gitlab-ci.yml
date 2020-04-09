@@ -63,9 +63,13 @@ image_test:
     refs:
       - merge_requests
     changes:
+      - package-lock.json
       - Dockerfile
+      - Dockerfile-test
   needs:
     - image_build
+
+  image: getto/hangar:latest
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
