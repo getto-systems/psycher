@@ -1,7 +1,7 @@
 {
   "name": "getto-psycher-slack",
   "description": "getto-psycher slack endpoint",
-  "version": "2.7.11",
+  "version": "2.7.12",
   "scripts": {
     "start": "npm run watch",
     "watch": "npm run watch:lib & npm run watch:test",
@@ -22,6 +22,6 @@
     "getto-memoize": "^1.0.6",
     "getto-slack_api": "^1.0.5",
     "getto-specification": "^1.0.3",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.3"
   }
 }
