@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.7.15
+
+- fix: deploy.sh : See merge request getto-systems-base/projects/psycher/slack!176
+
+
+
 ## Version : 2.7.14
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200409035336 : See merge request getto-systems-base/projects/psycher/slack!174
