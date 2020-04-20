@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version : 2.7.17
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200420222418 : See merge request getto-systems-base/projects/psycher/slack!183
+- merge: dependabot : See merge request getto-systems-base/projects/psycher/slack!182
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200420035136 : See merge request getto-systems-base/projects/psycher/slack!181
+- fix: vulnerabilities : 2020-04-20T01:08:33,394304294 00:00 : See merge request getto-systems-base/projects/psycher/slack!180
+
+
 ## Version : 2.7.16
 
 - fix: deploy.sh : See merge request getto-systems-base/projects/psycher/slack!178
