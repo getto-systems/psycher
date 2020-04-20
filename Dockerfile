@@ -10,8 +10,8 @@ RUN set -x && \
     git \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-04-09" && \
-  apt-get install -y --no-install-recommends \
+  : "to fix vulnerabilities, update packages : 2020-04-20" && \
+  : apt-get install -y --no-install-recommends \
     libgnutls30 \
   && \
   : "install awscli" && \
