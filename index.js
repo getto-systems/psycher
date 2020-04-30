@@ -84,7 +84,7 @@ const handle = (event_info) => {
 const init_repository = () => {
   const uuid_store = infra.uuid_store.init({
     uuid: {
-      generate: () => vendor.v4(),
+      generate: () => vendor.uuid.v4(),
     },
   });
   const document_store = infra.document_store.init({
