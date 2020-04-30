@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.9.2
+
+- fix: gitlab ci : See merge request getto-systems-base/projects/psycher/slack!196
+- fix: docker-wrapper rc path : See merge request getto-systems-base/projects/psycher/slack!195
+
+
 ## Version : 2.9.1
 
 
