@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.9.0
+
+- fix: call uuid v4 : See merge request getto-systems-base/projects/psycher/slack!192
+
+
+
 ## Version : 2.8.0
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200430040838 : See merge request getto-systems-base/projects/psycher/slack!190
