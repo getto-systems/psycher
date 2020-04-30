@@ -217,7 +217,7 @@ release_success:
   before_script:
     - export url=$GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true
     - export channel=$SLACK_CHANNEL
-    - export version=getto:$(cat .release-version)
+    - export version=slack:$(cat .release-version)
   script:
     - curl https://trellis.getto.systems/psycher/getto/2.6.0/notify-release-success.sh | bash -s -- $url $channel $version
 
@@ -239,6 +239,6 @@ release_failure:
   before_script:
     - export url=$GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true
     - export channel=$SLACK_CHANNEL
-    - export version=getto:$(cat .release-version)
+    - export version=slack:$(cat .release-version)
   script:
     - curl https://trellis.getto.systems/psycher/getto/2.6.0/notify-release-failure.sh | bash -s -- $url $channel $version
