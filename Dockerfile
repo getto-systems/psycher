@@ -10,7 +10,7 @@ RUN set -x && \
     git \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-04-20" && \
+  : "to fix vulnerabilities, update packages : 2020-04-27" && \
   : apt-get install -y --no-install-recommends \
     libgnutls30 \
   && \
