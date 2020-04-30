@@ -23,7 +23,7 @@ const infra = {
 };
 
 const vendor = {
-  uuid: require("uuid/v4"),
+  uuid: require("uuid"),
 
   aws_dynamodb: require("getto-aws_dynamodb"),
   aws_secrets: require("getto-aws_secrets"),
@@ -84,7 +84,7 @@ const handle = (event_info) => {
 const init_repository = () => {
   const uuid_store = infra.uuid_store.init({
     uuid: {
-      generate: () => vendor.uuid(),
+      generate: () => vendor.v4(),
     },
   });
   const document_store = infra.document_store.init({
