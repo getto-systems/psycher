@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version : 2.9.3
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200501153018 : See merge request getto-systems-base/projects/psycher/slack!200
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!199
+- upgrade: node 12 : See merge request getto-systems-base/projects/psycher/slack!198
+
+
 ## Version : 2.9.2
 
 - fix: gitlab ci : See merge request getto-systems-base/projects/psycher/slack!196
