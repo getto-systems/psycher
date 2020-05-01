@@ -3,7 +3,11 @@ FROM amazonlinux:2
 ENV NODE_VERSION 12
 
 RUN set -x && \
-  yum install -y curl git python3-pip && \
+  yum install -y \
+    curl \
+    git \
+    python3-pip \
+  && \
   : "install awscli" && \
   pip3 install awscli && \
   : "install node" && \
