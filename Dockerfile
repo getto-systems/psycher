@@ -1,6 +1,6 @@
 FROM debian:buster
 
-ENV NODE_VERSION 10
+ENV NODE_VERSION 12
 
 RUN set -x && \
   apt-get update && \
