@@ -19,7 +19,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: getto-psycher-slack
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       Handler: index.handler
       MemorySize: 128
       Timeout: 5
