@@ -4,10 +4,6 @@ ENV NODE_VERSION 12
 
 RUN set -x && \
   yum install -y curl git python3-pip && \
-  : "to fix vulnerabilities, update packages : 2020-04-27" && \
-  : yum install -y \
-    libgnutls30 \
-  && \
   : "install awscli" && \
   pip3 install awscli && \
   : "install node" && \
