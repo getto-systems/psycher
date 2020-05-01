@@ -1,29 +1,20 @@
-FROM debian:buster
+FROM amazonlinux:2
 
-ENV NODE_VERSION 10
+ENV NODE_VERSION 12
 
 RUN set -x && \
-  apt-get update && \
-  apt-get install -y \
-    ca-certificates \
+  yum install -y \
     curl \
     git \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-04-27" && \
-  : apt-get install -y --no-install-recommends \
-    libgnutls30 \
-  && \
   : "install awscli" && \
   pip3 install awscli && \
   : "install node" && \
-  curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
-  apt-get install -y nodejs && \
+  curl -sL https://rpm.nodesource.com/setup_$NODE_VERSION.x | bash - && \
+  yum install -y nodejs && \
   npm install -g npm && \
   rm -rf /root/.npm && \
-  : "cleanup apt caches" && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
   : "add working user" && \
   useradd -m getto && \
   : "prepare app directory" && \

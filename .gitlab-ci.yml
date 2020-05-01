@@ -1,11 +1,9 @@
-image: getto/hangar:ptLsCSfwmiGWHZFO-20200430040838
+image: getto/hangar:ptLsCSfwmiGWHZFO-20200501153018
 
 stages:
   - test
   - image_build
   - image_test
-  - image_scheduled_test
-  - image_fix_vulnerabilities
   - image_push
   - bump_version
   - release
@@ -88,46 +86,6 @@ image_test:
 
   script:
     - getto-hangar-test-from-file.sh .build/image.tar
-
-image_scheduled_test:
-  stage: image_scheduled_test
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-
-  image: getto/hangar:latest
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-  services:
-    - docker:dind
-
-  script:
-    - getto-hangar-test.sh
-
-image_fix_vulnerabilities:
-  stage: image_fix_vulnerabilities
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-  when: on_failure
-
-  image: getto/hangar:latest
-
-  before_script:
-    - git config user.email admin@getto.systems
-    - git config user.name getto
-    - curl https://trellis.getto.systems/git/post/1.0.0/setup.sh | bash -s -- ./vendor/getto-systems
-    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
-  script:
-    - getto-hangar-fix-vulnerabilities.sh
-    - curl https://trellis.getto.systems/ci/bump-version/1.4.0/request.sh | bash -s -- ./.fix-vulnerabilities-message.sh
 
 image_push:
   stage: image_push
