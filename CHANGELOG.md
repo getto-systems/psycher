@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 2.9.4
+
+
+
 ## Version : 2.9.3
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200501153018 : See merge request getto-systems-base/projects/psycher/slack!200
