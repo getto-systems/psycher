@@ -1,1 +1,1 @@
---ignore-unfixed
+--ignore-unfixed --timeout 10m0s
