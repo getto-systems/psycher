@@ -106,7 +106,7 @@ image_scheduled_test:
     - docker:dind
 
   script:
-    - ./getto-hangar-test.sh
+    - getto-hangar-test.sh
 
 image_fix_vulnerabilities:
   stage: image_fix_vulnerabilities
@@ -123,7 +123,7 @@ image_fix_vulnerabilities:
     - curl https://trellis.getto.systems/git/post/1.0.0/setup.sh | bash -s -- ./vendor/getto-systems
     - export PATH=$PATH:./vendor/getto-systems/git-post/bin
   script:
-    - ./getto-hangar-fix-vulnerabilities.sh
+    - getto-hangar-fix-vulnerabilities.sh
     - curl https://trellis.getto.systems/ci/bump-version/1.4.0/request.sh | bash -s -- ./.fix-vulnerabilities-message.sh
 
 image_push:
