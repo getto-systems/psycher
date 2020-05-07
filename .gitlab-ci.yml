@@ -97,6 +97,8 @@ image_scheduled_test:
     variables:
       - $CHECK
 
+  image: getto/hangar:latest
+
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
@@ -116,6 +118,8 @@ image_fix_vulnerabilities:
     variables:
       - $CHECK
   when: on_failure
+
+  image: getto/hangar:latest
 
   before_script:
     - git config user.email admin@getto.systems
