@@ -103,7 +103,6 @@ image_scheduled_test:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
-    image: getto/hangar
   services:
     - docker:dind
 
