@@ -89,10 +89,7 @@ image_test:
     paths:
       - .build
 
-  image: amazonlinux:2
-
   before_script:
-    - yum install -y curl tar gzip
     - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | sh -s -- vendor
   script:
