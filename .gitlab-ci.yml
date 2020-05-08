@@ -52,12 +52,9 @@ image_build:
   services:
     - docker:dind
 
-  cache:
-    key:
-      files:
-        - Dockerfile
+  artifacts:
     paths:
-      - .build
+      - .build/image.tar
 
   before_script:
     - mkdir -p .build
@@ -80,14 +77,6 @@ image_test:
       - Dockerfile-test
   needs:
     - image_build
-
-  cache:
-    policy: pull
-    key:
-      files:
-        - Dockerfile
-    paths:
-      - .build
 
   before_script:
     - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
