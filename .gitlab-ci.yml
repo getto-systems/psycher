@@ -42,7 +42,7 @@ image_build:
       - Dockerfile
       - Dockerfile-test
 
-  image: getto/hangar:latest
+  image: docker:stable
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -119,7 +119,7 @@ image_fix_vulnerabilities:
       - $CHECK
   when: on_failure
 
-  image: getto/hangar:latest
+  image: buildpack-deps:buster-scm
 
   before_script:
     - git config user.email admin@getto.systems
@@ -128,7 +128,7 @@ image_fix_vulnerabilities:
     - export PATH=$PATH:./vendor/getto-systems/git-post/bin
   script:
     - curl $TRELLIS_HANGAR/fix-vulnerabilities.sh | bash -s -- Dockerfile
-    - git add Dockerfile && git commit -m "fix: vulnerabilities"
+    - 'git add Dockerfile && git commit -m "fix: vulnerabilities"'
     - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/fix-vulnerabilities.sh
 
 image_push:
@@ -145,7 +145,7 @@ image_push:
       - schedules
       - triggers
 
-  image: getto/hangar:latest
+  image: docker:stable
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -160,13 +160,14 @@ image_push:
     - docker:dind
 
   before_script:
+    - apk update && apk install git curl
     - export hangar_id=$(cat .getto-hangar-image | sed 's/.*://' | sed 's/-.*//')
     - export image=getto/hangar:$hangar_id-$(date +%Y%m%d%H%M%S)
   script:
     - curl $TRELLIS_HANGAR/push.sh | bash -s -- Dockerfile $image
-    - sed -i -e "s|image: getto/hangar:$hangar_id-\\?.*|image: $image|" .gitlab-ci.yml
+    - 'sed -i -e "s|image: getto/hangar:$hangar_id-\\?.*|image: $image|" .gitlab-ci.yml'
     - echo $image > .getto-hangar-image
-    - git add .gitlab-ci.yml .getto-hangar-image && git commit -m "update: image"
+    - 'git add .gitlab-ci.yml .getto-hangar-image && git commit -m "update: image"'
     - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/fix-image.sh
 
 bump_version:
