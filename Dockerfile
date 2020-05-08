@@ -8,6 +8,11 @@ RUN set -x && \
     git \
     python3-pip \
   && \
+  : "to fix vulnerabilities, update packages : 2020-04-27" && \
+  : yum install -y \
+    git \
+    git-man \
+  && \
   : "install awscli" && \
   pip3 install awscli && \
   : "install node" && \
