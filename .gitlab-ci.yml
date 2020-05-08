@@ -152,6 +152,7 @@ image_push:
     - git config user.email admin@getto.systems
     - git config user.name getto
     - curl $TRELLIS_GIT_POST/setup.sh | sh -s -- ./vendor/getto-systems
+    - export HOME=$(pwd)
     - export PATH=$PATH:./vendor/getto-systems/git-post/bin
     - export hangar_id=$(cat .getto-hangar-image | sed 's/.*://' | sed 's/-.*//')
     - export image=getto/hangar:$hangar_id-$(date +%Y%m%d%H%M%S)
