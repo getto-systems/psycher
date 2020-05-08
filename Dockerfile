@@ -10,7 +10,7 @@ RUN set -x && \
     git-core \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-05-08" && \
+  : "to fix vulnerabilities, update packages : 2020-05-08-01" && \
   : yum install -y \
     git-core \
   && \
