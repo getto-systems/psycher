@@ -12,7 +12,7 @@ stages:
   - release_notify
 
 variables:
-  TRELLIS_HANGAR: https://trellis.getto.systems/hangar/2.35.0
+  TRELLIS_HANGAR: https://trellis.getto.systems/hangar/2.37.0
   TRELLIS_GIT_POST: https://trellis.getto.systems/git/post/1.0.0
   TRELLIS_CI_BUMP_VERSION: https://trellis.getto.systems/ci/bump-version/1.4.0
   TRELLIS_PSYCHER_GETTO: https://trellis.getto.systems/psycher/getto/2.6.0
@@ -55,6 +55,7 @@ image_build:
   artifacts:
     paths:
       - .build/image.tar
+    expire_in: 1 day
 
   before_script:
     - mkdir -p .build
@@ -65,6 +66,7 @@ image_build:
     - docker build -t $image-test -f Dockerfile-test --disable-content-trust .
     - docker run --rm --disable-content-trust $image-test
     - docker image save $image --output .build/image.tar
+    - chown 1000:1000 .build/image.tar
 
 image_test:
   stage: image_test
@@ -153,12 +155,15 @@ image_push:
     - export PATH=$PATH:./vendor/getto-systems/git-post/bin
     - export hangar_id=$(cat .getto-hangar-image | sed 's/.*://' | sed 's/-.*//')
     - export image=getto/hangar:$hangar_id-$(date +%Y%m%d%H%M%S)
+    - curl $TRELLIS_HANGAR/docker_login.sh | sh
   script:
     - curl $TRELLIS_HANGAR/push.sh | sh -s -- Dockerfile $image
     - 'sed -i -e "s|image: getto/hangar:$hangar_id-\\?.*|image: $image|" .gitlab-ci.yml'
     - echo $image > .getto-hangar-image
     - 'git add .gitlab-ci.yml .getto-hangar-image && git commit -m "update: image"'
     - curl $TRELLIS_CI_BUMP_VERSION/request.sh | sh -s -- ./.message/fix-image.sh
+  after_script:
+    - docker logout
 
 bump_version:
   stage: bump_version
