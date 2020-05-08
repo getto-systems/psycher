@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## Version : 2.9.6
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!225
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200508063153 : See merge request getto-systems-base/projects/psycher/slack!224
+- merge: dependabot : See merge request getto-systems-base/projects/psycher/slack!223
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!222
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!221
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200508061212 : See merge request getto-systems-base/projects/psycher/slack!220
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!219
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!218
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!217
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200508050545 : See merge request getto-systems-base/projects/psycher/slack!216
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!215
+- fix: message.sh : See merge request getto-systems-base/projects/psycher/slack!214
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!213
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!212
+
+- fix: Dockerfile : See merge request getto-systems-base/projects/psycher/slack!211
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!210
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!209
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!208
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!207
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!206
+
+
 ## Version : 2.9.5
 
 - fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200501160112 : See merge request getto-systems-base/projects/psycher/slack!204
