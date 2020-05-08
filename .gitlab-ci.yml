@@ -121,7 +121,7 @@ image_fix_vulnerabilities:
   script:
     - curl $TRELLIS_HANGAR/fix-vulnerabilities.sh | sh -s -- Dockerfile
     - 'git add Dockerfile && git commit -m "fix: vulnerabilities"'
-    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | sh -s -- ./.message/fix-vulnerabilities.sh
+    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/fix-vulnerabilities.sh
 
 image_push:
   stage: image_push
@@ -163,7 +163,7 @@ image_push:
     - 'sed -i -e "s|image: getto/hangar:$hangar_id-\\?.*|image: $image|" .gitlab-ci.yml'
     - echo $image > .getto-hangar-image
     - 'git add .gitlab-ci.yml .getto-hangar-image && git commit -m "update: image"'
-    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | sh -s -- ./.message/fix-image.sh
+    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/fix-image.sh
 
 bump_version:
   stage: bump_version
@@ -181,8 +181,8 @@ bump_version:
     - curl $TRELLIS_GIT_POST/setup.sh | sh -s -- ./vendor/getto-systems
     - export PATH=$PATH:./vendor/getto-systems/git-post/bin
   script:
-    - curl $TRELLIS_CI_BUMP_VERSION/bump_version.sh | sh
-    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | sh -s -- ./.message/bump.sh
+    - curl $TRELLIS_CI_BUMP_VERSION/bump_version.sh | bash
+    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/bump.sh
 
 release:
   stage: release
