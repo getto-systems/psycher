@@ -7,13 +7,12 @@ RUN set -x && \
     tar \
     gzip \
     curl \
-    git \
+    git-core \
     python3-pip \
   && \
   : "to fix vulnerabilities, update packages : 2020-04-27" && \
   : yum install -y \
-    git \
-    git-man \
+    git-core \
   && \
   : "install awscli" && \
   pip3 install awscli && \

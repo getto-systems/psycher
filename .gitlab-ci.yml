@@ -96,7 +96,7 @@ image_test:
     - curl $TRELLIS_HANGAR/install_dockle.sh | bash -s -- vendor
   script:
     - ./vendor/dockle --exit-code 1 --input .build/image.tar
-    - ./vendor/trivy --exit-code 1 --quiet --light --no-progress --ignore-unfixed --input .build/image.tar
+    - ./vendor/trivy --exit-code 1 --light --no-progress --ignore-unfixed --input .build/image.tar
 
 image_scheduled_test:
   stage: image_scheduled_test
