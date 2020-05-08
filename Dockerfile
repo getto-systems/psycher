@@ -5,6 +5,7 @@ ENV NODE_VERSION 12
 RUN set -x && \
   yum install -y \
     tar \
+    gzip \
     curl \
     git \
     python3-pip \
