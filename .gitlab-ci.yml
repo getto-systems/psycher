@@ -160,7 +160,7 @@ image_push:
     - docker:dind
 
   before_script:
-    - apk update && apk install git curl
+    - apk update && apk add git curl
     - git config user.email admin@getto.systems
     - git config user.name getto
     - curl $TRELLIS_GIT_POST/setup.sh | bash -s -- ./vendor/getto-systems
