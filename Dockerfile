@@ -4,9 +4,15 @@ ENV NODE_VERSION 12
 
 RUN set -x && \
   yum install -y \
+    tar \
+    gzip \
     curl \
-    git \
+    git-core \
     python3-pip \
+  && \
+  : "to fix vulnerabilities, update packages : 2020-05-08-05" && \
+  : yum install -y \
+    git-core \
   && \
   : "install awscli" && \
   pip3 install awscli && \
