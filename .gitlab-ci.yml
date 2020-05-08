@@ -12,7 +12,7 @@ stages:
   - release_notify
 
 variables:
-  TRELLIS_HANGAR: https://trellis.getto.systems/hangar/2.34.0
+  TRELLIS_HANGAR: https://trellis.getto.systems/hangar/2.35.0
   TRELLIS_GIT_POST: https://trellis.getto.systems/git/post/1.0.0
   TRELLIS_CI_BUMP_VERSION: https://trellis.getto.systems/ci/bump-version/1.4.0
   TRELLIS_PSYCHER_GETTO: https://trellis.getto.systems/psycher/getto/2.6.0
@@ -48,6 +48,7 @@ image_build:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
+
   services:
     - docker:dind
 
@@ -88,12 +89,15 @@ image_test:
     paths:
       - .build
 
+  image: amazonlinux:2
+
   before_script:
+    - yum install -y curl tar gzip
     - curl $TRELLIS_HANGAR/install_trivy.sh | bash -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | bash -s -- vendor
   script:
     - ./vendor/dockle --exit-code 1 --input .build/image.tar
-    - ./vendor/trivy --exit-code 1 --quiet --light --no-progress --ignore-unfixed --input .build/image.tar
+    - ./vendor/trivy --exit-code 1 --light --no-progress --ignore-unfixed --input .build/image.tar
 
 image_scheduled_test:
   stage: image_scheduled_test
@@ -151,16 +155,16 @@ image_push:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
-  before_script:
-    - git config user.email admin@getto.systems
-    - git config user.name getto
-    - curl $TRELLIS_GIT_POST/setup.sh | bash -s -- ./vendor/getto-systems
-    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+
   services:
     - docker:dind
 
   before_script:
     - apk update && apk install git curl
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl $TRELLIS_GIT_POST/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
     - export hangar_id=$(cat .getto-hangar-image | sed 's/.*://' | sed 's/-.*//')
     - export image=getto/hangar:$hangar_id-$(date +%Y%m%d%H%M%S)
   script:
