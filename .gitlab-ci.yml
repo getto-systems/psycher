@@ -48,6 +48,7 @@ image_build:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
+
   services:
     - docker:dind
 
@@ -154,16 +155,16 @@ image_push:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_CONTENT_TRUST: 1
-  before_script:
-    - git config user.email admin@getto.systems
-    - git config user.name getto
-    - curl $TRELLIS_GIT_POST/setup.sh | bash -s -- ./vendor/getto-systems
-    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+
   services:
     - docker:dind
 
   before_script:
     - apk update && apk install git curl
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl $TRELLIS_GIT_POST/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
     - export hangar_id=$(cat .getto-hangar-image | sed 's/.*://' | sed 's/-.*//')
     - export image=getto/hangar:$hangar_id-$(date +%Y%m%d%H%M%S)
   script:
