@@ -89,7 +89,6 @@ image_test:
       - .build
 
   before_script:
-    - yum install -y tar
     - curl $TRELLIS_HANGAR/install_trivy.sh | bash -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | bash -s -- vendor
   script:
