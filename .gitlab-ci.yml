@@ -164,8 +164,6 @@ image_push:
     - echo $image > .getto-hangar-image
     - 'git add .gitlab-ci.yml .getto-hangar-image && git commit -m "update: image"'
     - curl $TRELLIS_CI_BUMP_VERSION/request.sh | sh -s -- ./.message/fix-image.sh
-  after_script:
-    - docker logout
 
 bump_version:
   stage: bump_version
