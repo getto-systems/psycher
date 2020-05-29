@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Version : 2.9.7
+
+- fix: image : getto/hangar:ptLsCSfwmiGWHZFO-20200529062904 : See merge request getto-systems-base/projects/psycher/slack!232
+- merge: dependabot : See merge request getto-systems-base/projects/psycher/slack!231
+
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!230
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!229
+- fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!228
+- remove: unused file : See merge request getto-systems-base/projects/psycher/slack!227
+
+
 ## Version : 2.9.6
 
 - fix: gitlab-ci : See merge request getto-systems-base/projects/psycher/slack!225
