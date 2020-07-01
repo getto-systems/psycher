@@ -10,9 +10,10 @@ RUN set -x && \
     git-core \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-05-08-05" && \
-  : yum install -y \
-    git-core \
+  : "to fix vulnerabilities, update packages : 2020-06-08" && \
+  yum install -y \
+    python \
+    python-libs \
   && \
   : "install awscli" && \
   pip3 install awscli && \
