@@ -19,7 +19,7 @@ test("trigger", async () => {
       {
         project_id: "PROJECT-ID",
         token: "TOKEN",
-        ref: "master",
+        ref: "release",
         variables: {
           RELEASE: "true",
           channel: "CHANNEL",
