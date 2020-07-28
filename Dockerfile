@@ -12,8 +12,7 @@ RUN set -x && \
   && \
   : "to fix vulnerabilities, update packages : 2020-07-20" && \
   yum install -y \
-    file-libs \
-    libnghttp2 \
+    libxml2 \
   && \
   : "install awscli" && \
   pip3 install awscli && \
