@@ -14,6 +14,7 @@ RUN set -x && \
   yum install -y \
     file-libs \
     libnghttp2 \
+    libxml2 \
   && \
   : "install awscli" && \
   pip3 install awscli && \
