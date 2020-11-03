@@ -24,6 +24,8 @@ RUN set -x && \
     libssh2 \
     libxml2 \
     openldap \
+    python \
+    python-libs \
   && \
   : "install awscli" && \
   pip3 install awscli && \
