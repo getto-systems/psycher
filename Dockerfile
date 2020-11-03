@@ -10,10 +10,20 @@ RUN set -x && \
     git-core \
     python3-pip \
   && \
-  : "to fix vulnerabilities, update packages : 2020-07-20" && \
+  "to fix vulnerabilities, update packages : 2020-07-20" && \
   yum install -y \
-    python \
-    python-libs \
+    bash \
+    cpio \
+    expat \
+    glibc \
+    glibc-common \
+    glibc-langpack-en \
+    glibc-minimal-langpack \
+    libcom_err \
+    libcrypt \
+    libssh2 \
+    libxml2 \
+    openldap \
   && \
   : "install awscli" && \
   pip3 install awscli && \
