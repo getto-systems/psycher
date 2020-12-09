@@ -22,6 +22,6 @@
     "getto-memoize": "^1.0.6",
     "getto-slack_api": "^1.0.5",
     "getto-specification": "^1.0.3",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.2"
   }
 }
