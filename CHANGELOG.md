@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 2.11.1
+
+
+
 ## Version : 2.11.0
 
 - fix: release key : See merge request getto-systems-base/projects/psycher/slack!276
