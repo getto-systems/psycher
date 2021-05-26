@@ -49,10 +49,10 @@ test("job_token", async () => {
   };
 
   const elm_token = await store.job_token({job_signature, target: "elm"});
-  expect(elm_token).toEqual({project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN"});
+  expect(elm_token).toEqual({project_id: "ELM-PROJECT-ID", token: "ELM-TOKEN", release_key: "RELEASE"});
 
   const rails_token = await store.job_token({job_signature, target: "rails"});
-  expect(rails_token).toEqual({project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN"});
+  expect(rails_token).toEqual({project_id: "RAILS-PROJECT-ID", token: "RAILS-TOKEN", release_key: "RELEASE"});
 
   const no_project_id_token = await store.job_token({job_signature, target: "no_project_id"});
   expect(no_project_id_token).toBe(null);
